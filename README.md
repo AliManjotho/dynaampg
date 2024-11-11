@@ -141,7 +141,7 @@ Run the script generate_ood_dataset.py
 ```
 
 
-.# Plot All Gram Matrices
+# Plot All Gram Matrices
 ```
 Run the script plot_all_grams.py
 ```
