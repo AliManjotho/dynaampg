@@ -176,3 +176,22 @@ https://drive.google.com/file/d/1fgvWeshlc10raOoQfPfEXtsp73O4fa4L/view?usp=shari
 ```
  plot_dynamic_angular_margins.py
 ``` 
+
+# Plot Confusion Matrices
+
+1. Run the script (ID Eval)
+```
+ plot_confusion_matrx.py
+``` 
+
+2. Run the script (OOD Eval)
+```
+ plot_ood_confusion_matrx.py
+``` 
+
+# Plot Threshold
+
+1. Run the script
+```
+ plot_threshold.py
+``` 
