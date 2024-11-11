@@ -171,7 +171,7 @@ https://drive.google.com/file/d/1fgvWeshlc10raOoQfPfEXtsp73O4fa4L/view?usp=shari
 ```
  plot_data_distribution.py
 ```
-![Alt text](assets/fig_data_distribution.png?raw=true "Data Distribution")
+![Alt text](assets/fig_dataset_distribution.png?raw=true "Data Distribution")
 
 # Plot Dynamic Angular Margins
 
@@ -199,4 +199,4 @@ https://drive.google.com/file/d/1fgvWeshlc10raOoQfPfEXtsp73O4fa4L/view?usp=shari
 ```
  plot_threshold.py
 ``` 
-![Alt text](assets/fig_threshold.png?raw=true "Threshold")
+![Alt text](assets/fig_threshold_plot.png?raw=true "Threshold")
