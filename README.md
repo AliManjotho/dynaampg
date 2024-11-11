@@ -161,6 +161,8 @@ https://drive.google.com/file/d/1fgvWeshlc10raOoQfPfEXtsp73O4fa4L/view?usp=shari
 ```
  plot_all_grams.py
 ```
+![Alt text](assets/fig_gram_matrices.png?raw=true "Gram Matrices")
+
 
 
 # Plot Dataset Distribution
@@ -169,6 +171,7 @@ https://drive.google.com/file/d/1fgvWeshlc10raOoQfPfEXtsp73O4fa4L/view?usp=shari
 ```
  plot_data_distribution.py
 ```
+![Alt text](assets/fig_data_distribution.png?raw=true "Data Distribution")
 
 # Plot Dynamic Angular Margins
 
@@ -176,6 +179,7 @@ https://drive.google.com/file/d/1fgvWeshlc10raOoQfPfEXtsp73O4fa4L/view?usp=shari
 ```
  plot_dynamic_angular_margins.py
 ``` 
+![Alt text](assets/fig_dynamic_angular_margins.png?raw=true "Dynamic Angular Margins")
 
 # Plot Confusion Matrices
 
@@ -183,15 +187,16 @@ https://drive.google.com/file/d/1fgvWeshlc10raOoQfPfEXtsp73O4fa4L/view?usp=shari
 ```
  plot_confusion_matrx.py
 ``` 
-
+![Alt text](assets/fig_confusion_matrices.png?raw=true "Confusion Matrices")
 2. Run the script (OOD Eval)
 ```
  plot_ood_confusion_matrx.py
 ``` 
-
+![Alt text](assets/fig_ood_confusion_matrices.png?raw=true "OOD Confusion Matrices")
 # Plot Threshold
 
 1. Run the script
 ```
  plot_threshold.py
 ``` 
+![Alt text](assets/fig_threshold.png?raw=true "Threshold")
