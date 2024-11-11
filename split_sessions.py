@@ -66,9 +66,9 @@ if __name__=='__main__':
     splitcap_path= r'D:\SH\TrafficClassification\vpn-gcn\scripts\SplitCap.exe'
     
     # Split sessions for ISCX dataset
-    iscx_dataset_path = r'D:\SH\TrafficClassification\vpn-gcn\datasets\ISCX'
-    pcapng_to_pcap(iscx_dataset_path)
-    split_sessions(iscx_dataset_path, splitcap_path)
+    iscx_vpn_dataset_path = r'D:\SH\TrafficClassification\vpn-gcn\datasets\ISCX-VPN'
+    pcapng_to_pcap(iscx_vpn_dataset_path)
+    split_sessions(iscx_vpn_dataset_path, splitcap_path)
 
     # Split sessions for VNAT-VPN dataset
     vnat_dataset_path = r'D:\SH\TrafficClassification\vpn-gcn\datasets\VNAT-VPN'

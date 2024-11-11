@@ -57,8 +57,6 @@ def preprocess(dataset_path):
         pbar.update(1)
 
 
-
-
         
         
 
@@ -66,8 +64,8 @@ def preprocess(dataset_path):
 if __name__=='__main__':
 
     # Process dummy dataset
-    dummy_dataset_path = r'D:\SH\CODE\gformer\datasets\dummy\raw'
-    preprocess(dummy_dataset_path)
+    ood_dataset_path = r'D:\SH\CODE\gformer\datasets\OOD\raw'
+    preprocess(ood_dataset_path)
  
-    print('ALL DONE!!!!!')
+    print('OOD Datasets Generate. ALL DONE!!!!!')
 

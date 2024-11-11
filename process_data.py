@@ -78,9 +78,9 @@ def preprocess(dataset_path, packets_per_session, dataset):
             class_label = ''
             one_hot_vector = []
 
-            if dataset == DATASET.ISCX:
-                class_label = iscx_get_class_label(Path(file).name)
-                one_hot_vector = iscx_get_one_hot(class_label)
+            if dataset == DATASET.ISCX_VPN:
+                class_label = iscx_vpn_get_class_label(Path(file).name)
+                one_hot_vector = iscx_vpn_get_one_hot(class_label)
             elif dataset == DATASET.VNAT:
                 class_label = vnat_get_class_label(Path(file).name)
                 one_hot_vector = vnat_get_one_hot(class_label)
@@ -114,7 +114,7 @@ if __name__=='__main__':
 
     # Process ISCX dataset
     iscx_dataset_path = r'D:\SH\TrafficClassification\vpn-gcn\datasets\ISCX'
-    preprocess(iscx_dataset_path, packets_per_session, DATASET.ISCX)
+    preprocess(iscx_dataset_path, packets_per_session, DATASET.ISCX_VPN)
 
     # Process VNAT-VPN dataset
     vnat_dataset_path = r'D:\SH\TrafficClassification\vpn-gcn\datasets\VNAT-VPN'

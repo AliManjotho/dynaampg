@@ -4,11 +4,10 @@ from scipy.ndimage import zoom
 from matplotlib import colormaps
 import matplotlib
 import matplotlib.pyplot as plt
+import json
 
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from torch.nn.functional import normalize
-
-
 
 
 
@@ -42,10 +41,6 @@ def get_tab20_cmap():
     cmap=matplotlib.colors.ListedColormap(colors)
 
     return cmap
-
-
-
-
 
 
 def calculate_gram_matrices(features, triang='upper'):
@@ -99,8 +94,6 @@ def plot_features(features):
 
 
 
-
-
 def plot_all_gram_matrices(data, fontsize=28, cmap='coolwarm'):
     num_rows = len(data)
     num_cols = len(data[0]['matrix'])
@@ -145,7 +138,6 @@ def plot_all_gram_matrices(data, fontsize=28, cmap='coolwarm'):
 
 
 
-
 def get_deviation(mean_grams, std_grams, sample_gram, alphas):
     dev_layerwise = []
     dev_total = 0.0
@@ -163,3 +155,14 @@ def get_deviation(mean_grams, std_grams, sample_gram, alphas):
         dev_layerwise.append((alphas[layer_index] * dev.tolist()))
 
     return dev_layerwise, np.sum(dev_layerwise)
+
+
+
+
+def save_dev_data(file_path, data):
+    with open(file_path, 'w') as f:
+        json.dump(data, f)
+
+def load_dev_data(file_path):
+    with open(file_path, 'r') as f:
+        return json.load(f)

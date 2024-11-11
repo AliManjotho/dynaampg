@@ -21,13 +21,6 @@ from utils_torch import *
 
 
 
-
-
-
-
-
-
-
 if __name__ == "__main__":
 
     batch_size = 32
@@ -39,7 +32,7 @@ if __name__ == "__main__":
     pre_trained_weights= 'saved_models/gformer_model_weights_500.pth'
 
     iscx_root = 'D:/SH/CODE/gformer/datasets/iscx'
-    dummy_root = 'D:/SH/CODE/gformer/datasets/dummy'
+    ood_root = 'D:/SH/CODE/gformer/datasets/ood'
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -84,16 +77,16 @@ if __name__ == "__main__":
 
 
 
-    dataset_dummy = SessionDataset(root=dummy_root)
+    dataset_ood = SessionDataset(root=ood_root)
     torch.manual_seed(12345)
-    dataset_dummy = dataset_dummy.shuffle()
+    dataset_ood = dataset_ood.shuffle()
 
-    train_dataset_dummy = dataset_dummy[:int(len(dataset_dummy) * 0.7)]
-    train_loader_dummy = DataLoader(train_dataset_dummy, batch_size=batch_size, shuffle=True)
+    train_dataset_ood = dataset_ood[:int(len(dataset_ood) * 0.7)]
+    train_loader_ood = DataLoader(train_dataset_ood, batch_size=batch_size, shuffle=True)
 
-    dataiter_dummy = iter(train_loader_dummy)
+    dataiter_ood = iter(train_loader_ood)
 
-    sessions5 = next(dataiter_dummy)
+    sessions5 = next(dataiter_ood)
     output5 = model.infer(sessions5, device)    
     features5 = model.get_features()    
     grams_5 = calculate_gram_matrices(features5, triang='lower')
@@ -113,7 +106,7 @@ if __name__ == "__main__":
 
 
 
-    sessions6 = next(dataiter_dummy)
+    sessions6 = next(dataiter_ood)
     output6 = model.infer(sessions6, device)    
     features6 = model.get_features()    
     grams_6 = calculate_gram_matrices(features6, triang='lower')
@@ -155,5 +148,3 @@ if __name__ == "__main__":
     # nipy_spectral
     # gist_stern
 
-
-    plot_features(features1)

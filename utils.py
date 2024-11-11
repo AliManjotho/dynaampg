@@ -2,10 +2,11 @@ from pathlib import Path
 from enum import Enum
 
 class DATASET(Enum):
-    ISCX=0
+    ISCX_VPN=0
     VNAT=1
+    ISCX_TOR=2
 
-iscx_map = {
+iscx_vpn_map = {
             'email': ['email'],
             'chat': ['aim_chat', 'AIMchat', 'facebook_chat', 'facebookchat', 'hangout_chat', 'hangouts_chat', 'icq_chat', 'ICQchat', 'gmailchat', 'gmail_chat', 'skype_chat'],
             'streaming': ['netflix', 'spotify', 'vimeo', 'youtube', 'youtubeHTML5'],
@@ -34,8 +35,8 @@ vnat_map = {
 }
 
 
-def iscx_get_unique_labels(): 
-    return list(iscx_map.keys())
+def iscx_vpn_get_unique_labels(): 
+    return list(iscx_vpn_map.keys())
 
 def vnat_get_unique_labels(): 
     return list(vnat_map.keys())
@@ -43,10 +44,10 @@ def vnat_get_unique_labels():
 
 
 
-def iscx_get_class_label(file): 
+def iscx_vpn_get_class_label(file): 
     cls = ''   
     label = file.split('.')[0]
-    for m_key, m_values in iscx_map.items():
+    for m_key, m_values in iscx_vpn_map.items():
         for value in m_values:
             if label[:len(value)] == value:
                 cls = m_key
@@ -68,8 +69,8 @@ def vnat_get_class_label(file):
 
 
 
-def iscx_get_one_hot(cls):
-    clss = iscx_get_unique_labels()
+def iscx_vpn_get_one_hot(cls):
+    clss = iscx_vpn_get_unique_labels()
     index = clss.index(cls)
 
     one_hot = [0 for _ in range(len(clss))]
@@ -110,8 +111,8 @@ def num_packets_to_edge_indices(num_packets):
 def count_classes(dataset_path, dataset):
 
     class_names = {}
-    if dataset == DATASET.ISCX:
-        class_names = {c: 0 for c in list(iscx_map.keys())}
+    if dataset == DATASET.ISCX_VPN:
+        class_names = {c: 0 for c in list(iscx_vpn_map.keys())}
     elif dataset == DATASET.VNAT:
         class_names = {s: 0 for s in list(vnat_map.keys())} 
 
@@ -120,8 +121,8 @@ def count_classes(dataset_path, dataset):
 
     for file in enumerate(files, start=1):
         class_label = ''
-        if dataset == DATASET.ISCX:
-            class_label = iscx_get_class_label(Path(file.__str__()).name)
+        if dataset == DATASET.ISCX_VPN:
+            class_label = iscx_vpn_get_class_label(Path(file.__str__()).name)
         elif dataset == DATASET.VNAT:
             class_label = vnat_get_class_label(Path(file.__str__()).name)
 
@@ -140,9 +141,12 @@ if __name__=='__main__':
 
     # Process ISCX dataset
     iscx_dataset_path = r'D:\SH\TrafficClassification\vpn-gcn\datasets\ISCX'
-    count_classes(iscx_dataset_path, DATASET.ISCX)
+    count_classes(iscx_dataset_path, DATASET.ISCX_VPN)
 
     # Process VNAT-VPN dataset
     vnat_dataset_path = r'D:\SH\TrafficClassification\vpn-gcn\datasets\VNAT-VPN'
     count_classes(vnat_dataset_path, DATASET.VNAT)
+
+
+    
 
