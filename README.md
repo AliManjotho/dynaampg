@@ -136,12 +136,28 @@ Now CTRL+Click http://localhost:6006/ or copy this address in browser
 
 
 # Generate OOD dataset
+
+1. Download the OOD dataset from following link:
 ```
-Run the script generate_ood_dataset.py
+https://drive.google.com/file/d/1h0Q55pba1zF8Q4D7xJvenscLodof4CDS/view?usp=sharing
+```
+2. Extract and place the dataset in datasets/OOD
+
+3. Run the script 
+```
+generate_ood_dataset.py
 ```
 
 
 # Plot All Gram Matrices
+
+1. Download the pre-trained model from following link:
 ```
-Run the script plot_all_grams.py
+https://drive.google.com/file/d/1fgvWeshlc10raOoQfPfEXtsp73O4fa4L/view?usp=sharing
+```
+2. Extract and place the model in saved_models/
+
+3. Run the script
+```
+ plot_all_grams.py
 ```

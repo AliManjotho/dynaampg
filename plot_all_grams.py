@@ -17,8 +17,7 @@ import random
 import pickle 
 import shutil
 import os
-from utils_torch import *
-
+from gram_matrix import *
 
 
 def get_mean_grams(pre_trained_weights):
@@ -120,8 +119,6 @@ def get_ood_grams(num_samples, masks, ref_gram, pre_trained_weights):
     return grams
 
 
-
-
 if __name__ == "__main__":
 
     pre_trained_weights = 'saved_models/gformer_model_weights_500.pth'
@@ -138,11 +135,8 @@ if __name__ == "__main__":
 
     devs_file_path = 'saved_devs/dev_data.json'
     devs_data = load_dev_data(devs_file_path)
-    print(devs_data)
-
 
     data = [{'matrix': mean_grams, 'deviations': None, 'tot_dev': None, 'desc': '\(\mu_{G^{np}_l} (\mathcal{D}_{ID})\) at layer ', 'ylabel': 'Mean Gram matrices'},
-            # {'matrix': grams_2, 'desc': '\(\Sigma_{G^{np}_l} (\mathcal{D}_{ID})\) at layer ', 'ylabel': 'STD Gram matrices'},
             {'matrix': id_grams[0], 'deviations': devs_data[0]['layer_devs'], 'tot_dev':devs_data[0]['tot_dev'], 'desc': '\(G^{np}_l (\mathcal{D}_{ID})\) at layer ', 'ylabel':'ID Sample 1'},
             {'matrix': id_grams[1], 'deviations': devs_data[1]['layer_devs'], 'tot_dev':devs_data[1]['tot_dev'], 'desc': '\(G^{np}_l (\mathcal{D}_{OOD})\) at layer ', 'ylabel':'ID Sample 2'},
             {'matrix': ood_grams[0], 'deviations': devs_data[2]['layer_devs'], 'tot_dev':devs_data[2]['tot_dev'], 'desc': '\(G^{np}_l (\mathcal{D}_{OOD})\) at layer ', 'ylabel':'OOD Sample 1'},

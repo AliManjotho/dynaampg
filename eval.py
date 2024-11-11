@@ -17,7 +17,7 @@ import random
 import pickle 
 import shutil
 import os
-from utils_torch import *
+from gram_matrix import *
 
 
 

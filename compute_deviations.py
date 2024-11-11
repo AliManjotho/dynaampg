@@ -17,10 +17,7 @@ import random
 import pickle 
 import shutil
 import os
-from utils_torch import *
-
-
-
+from gram_matrix import *
 
 
 
@@ -37,7 +34,7 @@ if __name__ == "__main__":
     pre_trained_weights= 'saved_models/gformer_model_weights_500.pth'
 
     iscx_root = 'D:/SH/CODE/gformer/datasets/iscx'
-    dummy_root = 'D:/SH/CODE/gformer/datasets/dummy'
+    ood_root = 'D:/SH/CODE/gformer/datasets/ood'
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -52,10 +49,7 @@ if __name__ == "__main__":
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-
     model = GraphTransformerEncoder(input_dim=dataset.num_node_features, hidden_dim=512, output_dim=dataset.num_classes, num_layers=3, num_heads=4, C=C, model_state_path=pre_trained_weights)
-
-  
   
     dataiter = iter(test_loader)
     mean_sessions = next(dataiter)
@@ -63,13 +57,11 @@ if __name__ == "__main__":
     mean_features = model.get_features()    
     mean_grams = calculate_gram_matrices(mean_features, triang='lower')
 
-
     dataiter = iter(test_loader)
     std_sessions = next(dataiter)
     std_output = model.infer(std_sessions, device)    
     std_features = model.get_features()    
     std_grams = calculate_gram_matrices(std_features, triang='lower')
-
 
     id1_sessions = next(dataiter)
     id1_output = model.infer(id1_sessions, device)    
@@ -83,18 +75,16 @@ if __name__ == "__main__":
 
 
 
-
-
-    dataset_dummy = SessionDataset(root=dummy_root)
+    dataset_ood = SessionDataset(root=ood_root)
     torch.manual_seed(12345)
-    dataset_dummy = dataset_dummy.shuffle()
+    dataset_ood = dataset_ood.shuffle()
 
-    train_dataset_dummy = dataset_dummy[:int(len(dataset_dummy) * 0.7)]
-    train_loader_dummy = DataLoader(train_dataset_dummy, batch_size=batch_size, shuffle=True)
+    train_dataset_ood = dataset_ood[:int(len(dataset_ood) * 0.7)]
+    train_loader_ood = DataLoader(train_dataset_ood, batch_size=batch_size, shuffle=True)
 
-    dataiter_dummy = iter(train_loader_dummy)
+    dataiter_ood = iter(train_loader_ood)
 
-    ood1_sessions = next(dataiter_dummy)
+    ood1_sessions = next(dataiter_ood)
     ood1_output = model.infer(ood1_sessions, device)    
     ood1_features = model.get_features()    
     ood1_grams = calculate_gram_matrices(ood1_features, triang='lower')
@@ -114,7 +104,7 @@ if __name__ == "__main__":
 
 
 
-    ood2_sessions = next(dataiter_dummy)
+    ood2_sessions = next(dataiter_ood)
     ood2_output = model.infer(ood2_sessions, device)    
     ood2_features = model.get_features()    
     ood2_grams = calculate_gram_matrices(ood2_features, triang='lower')
