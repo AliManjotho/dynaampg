@@ -161,3 +161,18 @@ https://drive.google.com/file/d/1fgvWeshlc10raOoQfPfEXtsp73O4fa4L/view?usp=shari
 ```
  plot_all_grams.py
 ```
+
+
+# Plot Dataset Distribution
+
+1. Run the script
+```
+ plot_data_distribution.py
+```
+
+# Plot Dynamic Angular Margins
+
+1. Run the script
+```
+ plot_dynamic_angular_margins.py
+``` 
