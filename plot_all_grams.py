@@ -26,10 +26,9 @@ def get_mean_grams(pre_trained_weights):
     dk = 512
     C = 3
 
-    iscx_vpn_root = 'D:/SH/CODE/gformer/datasets/iscx'
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    dataset = SessionDataset(root=iscx_vpn_root)
+    dataset = SessionDataset(root=ISCX_VPN_DATASET_DIR)
     torch.manual_seed(12345)
     dataset = dataset.shuffle()
 
@@ -54,10 +53,9 @@ def get_id_grams(num_samples, pre_trained_weights):
     dk = 512
     C = 3
 
-    iscx_vpn_root = 'D:/SH/CODE/gformer/datasets/iscx'
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    dataset = SessionDataset(root=iscx_vpn_root)
+    dataset = SessionDataset(root=ISCX_VPN_DATASET_DIR)
     torch.manual_seed(12345)
     dataset = dataset.shuffle()
 
@@ -85,10 +83,9 @@ def get_ood_grams(num_samples, masks, ref_gram, pre_trained_weights):
     dk = 512
     C = 3
 
-    ood_root = 'D:/SH/CODE/gformer/datasets/ood'
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    dataset = SessionDataset(root=ood_root)
+    dataset = SessionDataset(root=OOD_DATASET_DIR)
     torch.manual_seed(12345)
     dataset = dataset.shuffle()
 
