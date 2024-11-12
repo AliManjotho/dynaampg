@@ -18,6 +18,7 @@ import pickle
 import shutil
 import os
 from gram_matrix import *
+from config import *
 
 
 
@@ -29,16 +30,11 @@ if __name__ == "__main__":
     epochs = 500
     dk = 512
     C = 3
-    save_dir = "saved_models"
-    tensorboard_logs = "runs"
-    pre_trained_weights= 'saved_models/gformer_model_weights_500.pth'
-
-    iscx_root = 'D:/SH/CODE/gformer/datasets/iscx'
-    ood_root = 'D:/SH/CODE/gformer/datasets/ood'
+    pre_trained_weights= os.path.join(SAVED_MODELS_DIR, 'gformer_model_weights_500.pth')
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    dataset = SessionDataset(root=iscx_root)
+    dataset = SessionDataset(root=ISCX_VPN_DATASET_DIR)
     torch.manual_seed(12345)
     dataset = dataset.shuffle()
 
@@ -75,7 +71,7 @@ if __name__ == "__main__":
 
 
 
-    dataset_ood = SessionDataset(root=ood_root)
+    dataset_ood = SessionDataset(root=OOD_DATASET_DIR)
     torch.manual_seed(12345)
     dataset_ood = dataset_ood.shuffle()
 

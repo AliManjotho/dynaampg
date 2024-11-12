@@ -18,7 +18,7 @@ import pickle
 import shutil
 import os
 from gram_matrix import *
-
+from config import *
 
 def get_mean_grams(pre_trained_weights):
     batch_size = 32
@@ -121,7 +121,7 @@ def get_ood_grams(num_samples, masks, ref_gram, pre_trained_weights):
 
 if __name__ == "__main__":
 
-    pre_trained_weights = 'saved_models/gformer_model_weights_500.pth'
+    pre_trained_weights = os.path.join(SAVED_MODELS_DIR, 'gformer_model_weights_500.pth')
 
     mean_grams = get_mean_grams(pre_trained_weights)
     id_grams = get_id_grams(2, pre_trained_weights)
@@ -133,7 +133,7 @@ if __name__ == "__main__":
     "font.family": 'Times New Roman'})
 
 
-    devs_file_path = 'saved_devs/dev_data.json'
+    devs_file_path = os.path.join(SAVED_DEVS_DIR, 'dev_data.json')
     devs_data = load_dev_data(devs_file_path)
 
     data = [{'matrix': mean_grams, 'deviations': None, 'tot_dev': None, 'desc': '\(\mu_{G^{np}_l} (\mathcal{D}_{ID})\) at layer ', 'ylabel': 'Mean Gram matrices'},

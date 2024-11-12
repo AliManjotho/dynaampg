@@ -2,6 +2,7 @@ import os
 from scapy.all import *
 from scapy.compat import raw
 from pathlib import Path
+from config import *
 
 
 def pcapng_to_pcap(dataset_path):
@@ -63,16 +64,12 @@ def split_sessions(dataset_path, splitcap_path):
 
 
 if __name__=='__main__':
-    splitcap_path= r'D:\SH\TrafficClassification\vpn-gcn\scripts\SplitCap.exe'
     
     # Split sessions for ISCX dataset
-    iscx_vpn_dataset_path = r'D:\SH\TrafficClassification\vpn-gcn\datasets\ISCX-VPN'
-    pcapng_to_pcap(iscx_vpn_dataset_path)
-    split_sessions(iscx_vpn_dataset_path, splitcap_path)
+    pcapng_to_pcap(ISCX_VPN_DATASET_DIR)
+    split_sessions(ISCX_VPN_DATASET_DIR, SPLITCAP_DIR)
 
     # Split sessions for VNAT-VPN dataset
-    vnat_dataset_path = r'D:\SH\TrafficClassification\vpn-gcn\datasets\VNAT-VPN'
-    pcapng_to_pcap(vnat_dataset_path)
-    split_sessions(vnat_dataset_path, splitcap_path)
+    split_sessions(VNAT_DATASET_DIR, SPLITCAP_DIR)
 
     print('ALL DONE!!!!!')

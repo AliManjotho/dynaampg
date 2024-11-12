@@ -10,16 +10,13 @@ from session_dataset import SessionDataset
 import networkx as nx
 import matplotlib.pyplot as plt
 from torch_geometric.utils.convert import to_networkx
+from config import *
 
 
 
 if __name__=='__main__':
 
-    iscx_root = r'D:\SH\TrafficClassification\vpn-gcn\datasets\iscx'
-    vnat_root = r'D:\SH\TrafficClassification\vpn-gcn\datasets\vnat-vpn'
-    
-
-    roots = [iscx_root, vnat_root]
+    roots = [ISCX_VPN_DATASET_DIR, VNAT_DATASET_DIR]
 
     for root in roots:
         if not os.path.isdir(root + '\\raw'):
@@ -30,10 +27,7 @@ if __name__=='__main__':
         cmd = "move /Y " + root + "\\*.json " + root + '\\raw'
         os.system(cmd)
 
-    iscx_dataset = SessionDataset(root=iscx_root)
-    vnat_dataset = SessionDataset(root=vnat_root)
-
-    print(iscx_dataset[1])
-    print(vnat_dataset[1])
+    iscx_dataset = SessionDataset(root=roots[0])
+    vnat_dataset = SessionDataset(root=roots[1])
 
     print('ALL DONE!!!!!')

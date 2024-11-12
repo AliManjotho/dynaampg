@@ -34,7 +34,7 @@ https://archive.ll.mit.edu/datasets/vnat/VNAT_release_1.zip
 ## 4. Prepare the datasets
 ### 4A. (ISCX-VPN-NonVPN-2016)
 
-* Extract the following files in folder datasets/ISCX
+* Extract the following files in folder datasets/ISCX_VPN
 ```
 NonVPN-PCAPs-01.zip
 NonVPN-PCAPs-02.zip
@@ -57,7 +57,7 @@ VPN-PCAPS-02.zip
   - vpn_youtube_A.pcap
 ```
 ### 4B. (VNAT-VPN)
-* Extract the following files in folder datasets/VNAT-VPN
+* Extract the following files in folder datasets/VNAT
 ```
 VNAT_release_1.zip
 ```

@@ -3,6 +3,7 @@ from matplotlib import colormaps
 import matplotlib
 from session_dataset import SessionDataset
 import torch
+from config import *
 
 
 import numpy as np
@@ -63,9 +64,9 @@ def preprocess(dataset_path):
 
 if __name__=='__main__':
 
-    # Process dummy dataset
-    ood_dataset_path = r'D:\SH\CODE\gformer\datasets\OOD\raw'
-    preprocess(ood_dataset_path)
+    # Process OOD dataset
+    preprocess(os.path.join(OOD_DATASET_DIR, 'raw'))
  
     print('OOD Datasets Generate. ALL DONE!!!!!')
+
 

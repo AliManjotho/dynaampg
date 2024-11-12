@@ -6,6 +6,7 @@ from session_dataset import SessionDataset
 from torch.utils.tensorboard import SummaryWriter
 import shutil
 import os
+from config import *
 
 # Training loop
 def train(train_loader, model, optimizer, criterion, device):
@@ -43,23 +44,19 @@ if __name__ == "__main__":
     epochs = 1200
     dk = 512
     C = 3
-    save_dir = "saved_models"
-    tensorboard_logs = "runs"
-
-    iscx_root = 'D:/SH/CODE/gformer/datasets/iscx'
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    if not os.path.exists(save_dir):
-        os.mkdir(save_dir)
+    if not os.path.exists(SAVED_MODELS_DIR):
+        os.mkdir(SAVED_MODELS_DIR)
     
-    if os.path.exists(tensorboard_logs):
-        shutil.rmtree(tensorboard_logs)
+    if os.path.exists(TENSORBOARD_LOG_DIR):
+        shutil.rmtree(TENSORBOARD_LOG_DIR)
 
   
     writer = SummaryWriter()
 
-    dataset = SessionDataset(root=iscx_root)
+    dataset = SessionDataset(root=ISCX_VPN_DATASET_DIR)
     torch.manual_seed(12345)
     dataset = dataset.shuffle()
 
@@ -88,7 +85,7 @@ if __name__ == "__main__":
         writer.add_scalars('Accuracy', {'Train Acc':train_acc, 'Test Acc':test_acc} , epoch)
 
         if train_acc > max_train_acc:
-            torch.save(model.state_dict(), os.path.join(save_dir, "gformer_model_weights_" + str(epoch) + ".pth"))
+            torch.save(model.state_dict(), os.path.join(SAVED_MODELS_DIR, "gformer_model_weights_" + str(epoch) + ".pth"))
             max_train_acc = train_acc
 
 

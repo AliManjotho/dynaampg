@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from config import *
 
 plt.rcParams.update({
     "text.usetex": True,
@@ -10,7 +11,7 @@ plt.rcParams.update({
 font_size = 40
 
 # File names for the confusion matrices
-csv_files = ['saved_evals/OOD-ISCX-VPN.csv', 'saved_evals/OOD-VNAT.csv', 'saved_evals/OOD-ISCX-Tor.csv']
+csv_files = [os.path.join(SAVED_EVALS_DIR, 'OOD-ISCX-VPN.csv'), os.path.join(SAVED_EVALS_DIR, 'OOD-VNAT.csv'), os.path.join(SAVED_EVALS_DIR, 'OOD-ISCX-Tor.csv')]
 dataset_names = ['ISCX-VPN', 'VNAT', 'ISCX-Tor']
 
 # Plot three confusion matrices in a single row
@@ -44,7 +45,10 @@ for index, csv_file in enumerate(csv_files):
 
     ax.set_xlabel('Predicted Class', fontsize=font_size)
     ax.set_ylabel('True Class', fontsize=font_size)
-    ax.set_title(f'Confusion Matrix for {dataset_names[index]}', fontsize=font_size)
+
+    # Extract just the dataset name from the file path for the title
+    dataset_name = os.path.basename(csv_file)[:-4]  # Remove .csv extension
+    ax.set_title(f'Confusion Matrix for {dataset_name}', fontsize=font_size)
 
     # Draw outline on four sides of the whole plot
     ax.spines['top'].set_linewidth(1)

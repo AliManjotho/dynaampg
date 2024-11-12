@@ -9,6 +9,7 @@ from pathlib import Path
 from tqdm import tqdm
 from scapy.layers.l2 import Ether
 from utils import *
+from config import *
 
 def myconverter(o):
     if isinstance(o, np.float32):
@@ -113,11 +114,9 @@ if __name__=='__main__':
     packets_per_session = 10
 
     # Process ISCX dataset
-    iscx_dataset_path = r'D:\SH\TrafficClassification\vpn-gcn\datasets\ISCX'
-    preprocess(iscx_dataset_path, packets_per_session, DATASET.ISCX_VPN)
+    preprocess(ISCX_VPN_DATASET_DIR, packets_per_session, DATASET.ISCX_VPN)
 
     # Process VNAT-VPN dataset
-    vnat_dataset_path = r'D:\SH\TrafficClassification\vpn-gcn\datasets\VNAT-VPN'
-    preprocess(vnat_dataset_path, packets_per_session, DATASET.VNAT)
+    preprocess(VNAT_DATASET_DIR, packets_per_session, DATASET.VNAT)
 
     print('ALL DONE!!!!!')

@@ -1,12 +1,9 @@
 *.pcap
 *.pcapng
-*.csv
 *.zip
 *.tar
 *.pt
-*.json
 *.pth
 *.th
 runs/
 datasets/
-saved_models/

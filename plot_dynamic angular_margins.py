@@ -4,22 +4,23 @@ import matplotlib.cm as cm
 import pandas as pd
 import matplotlib.colors as mcolors
 import random
+from config import *
 
 plt.rcParams['font.family'] = 'Times New Roman'
 
 def draw_arcface_plot(ax, dataset='iscx', C=3):
 
-    file_path = 'saved_margins/iscx.xlsx'
+    file_path = os.path.join(SAVED_MARGINS_DIR, 'iscx.xlsx')
     title = ''
 
     if dataset == 'iscx':
-        file_path = 'saved_margins/iscx.xlsx'
+        file_path = os.path.join(SAVED_MARGINS_DIR, 'iscx.xlsx')
         title = 'ISCX-VPN Dataset'
     elif dataset == 'vnat':
-        file_path = 'saved_margins/vnat.xlsx'
+        file_path = os.path.join(SAVED_MARGINS_DIR, 'vnat.xlsx')
         title = 'VNAT Dataset'
     elif dataset == 'tor':
-        file_path = 'saved_margins/tor.xlsx'
+        file_path = os.path.join(SAVED_MARGINS_DIR, 'tor.xlsx')
         title = 'ISCX-Tor Dataset'
 
     # Load the dataset statistics from the uploaded Excel file
