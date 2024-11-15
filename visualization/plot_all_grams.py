@@ -12,7 +12,7 @@ import torchvision.transforms as transforms
 from torch_geometric.loader import DataLoader
 import shutil
 from session_dataset import SessionDataset
-from graph_transformer import GraphTransformerEncoder
+from dynaampg import GraphTransformerEncoder
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from torch.nn.functional import normalize

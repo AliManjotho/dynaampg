@@ -5,9 +5,56 @@ from matplotlib import colormaps
 import matplotlib
 import matplotlib.pyplot as plt
 import json
+from enum import Enum
 
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from torch.nn.functional import normalize
+
+class GRAM_TYPE(Enum):
+    STANDARD_GRAM=0,
+    HIGH_ORDER_GRAM=1,
+    PENALIZED_GRAM=2
+
+
+
+def gram(f, triang='upper'):
+    gram_matrix = torch.mm(f, f.t())
+
+    if triang=='upper':
+        gram_matrix = torch.triu(gram_matrix)
+    elif triang=='lower':
+        gram_matrix = torch.tril(gram_matrix)
+
+    return gram_matrix
+
+def highorder_gram(f, order=1, triang='upper'):
+    f = torch.pow(f, order)
+    gram_matrix = torch.mm(f, f.t())
+    gram_matrix = torch.pow(gram_matrix, 1/order)
+
+    if triang=='upper':
+        gram_matrix = torch.triu(gram_matrix)
+    elif triang=='lower':
+        gram_matrix = torch.tril(gram_matrix)
+
+    return gram_matrix
+
+def penalized_gram(f, margins, triang='upper'):
+    gram_matrix = torch.mm(f, f.t())
+    gram_matrix = normalize(gram_matrix, p=2.0, dim = 0)
+
+    gram_matrices = []
+    for m in margins:
+        gram_matrix = gram_matrix * (2 * torch.pi / m)
+
+        if triang=='upper':
+            gram_matrix = torch.triu(gram_matrix)
+        elif triang=='lower':
+            gram_matrix = torch.tril(gram_matrix)
+    
+        gram_matrices.append(gram_matrix)
+
+    return gram_matrices
 
 
 def get_square_tensor(source_tesnor):

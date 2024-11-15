@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-class DynAAMSC(nn.Module):
+class DynAAM(nn.Module):
     def __init__(self, in_features, out_features, num_sub_centers=3, scale=64.0, base_margin=0.3, lambda_reg=0.1):
         """
         :param in_features: Number of input features (e.g., feature embedding size)
@@ -12,7 +12,7 @@ class DynAAMSC(nn.Module):
         :param base_margin: Initial margin value for each class, often denoted as 'm'
         :param lambda_reg: Regularization parameter to control margin smoothness
         """
-        super(DynAAMSC, self).__init__()
+        super(DynAAM, self).__init__()
         self.in_features = in_features
         self.out_features = out_features
         self.num_sub_centers = num_sub_centers

@@ -1,7 +1,7 @@
 import torch
 import torch.nn.functional as F
 from torch_geometric.loader import DataLoader
-from graph_transformer import GraphTransformerEncoder
+from dynaampg import DynAAMPG
 from session_dataset import SessionDataset
 from torch.utils.tensorboard import SummaryWriter
 import shutil
@@ -25,7 +25,7 @@ def train(train_loader, model, optimizer, criterion, device):
 
 # Testing loop
 @torch.no_grad()
-def test(test_loader, model, device):
+def test(test_loader, model, criterion, device):
     model = model.to(device)
     model.eval()
     correct = 0
@@ -48,7 +48,8 @@ if __name__ == "__main__":
     dk = 512
     C = 3
     num_layers = 3
-    num_heads = 4
+    num_heads = 8
+    dataset = ISCX_VPN_DATASET_DIR
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -61,7 +62,7 @@ if __name__ == "__main__":
   
     writer = SummaryWriter()
 
-    dataset = SessionDataset(root=ISCX_VPN_DATASET_DIR)
+    dataset = SessionDataset(root=dataset)
     torch.manual_seed(12345)
     dataset = dataset.shuffle()
 
@@ -73,7 +74,7 @@ if __name__ == "__main__":
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
     # Initialize model, optimizer, and loss function
-    model = GraphTransformerEncoder(input_dim=dataset.num_node_features, hidden_dim=dk, output_dim=dataset.num_classes, num_layers=num_layers, num_heads=num_heads, C=C)
+    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=dk, output_dim=dataset.num_classes, num_layers=num_layers, num_heads=num_heads, C=C)
     optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
     criterion = torch.nn.CrossEntropyLoss()
 
@@ -82,8 +83,8 @@ if __name__ == "__main__":
     max_train_acc = 0.0
     for epoch in range(1, epochs+1):
         train_loss = train(train_loader, model, optimizer, criterion, device)
-        _, train_acc = test(train_loader, model, device)
-        val_loss, val_acc = test(test_loader, model, device)
+        _, train_acc = test(train_loader, model, criterion, device)
+        val_loss, val_acc = test(test_loader, model, criterion, device)
         print(f'Epoch: {epoch:03d}, Train Loss: {train_loss:.4f}, Train Acc: {train_acc:.4f}, Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}')
 
         writer.add_scalars('Loss', {'Train Loss':train_loss, 'Val Loss':val_loss}, epoch)

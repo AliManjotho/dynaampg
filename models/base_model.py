@@ -1,17 +1,15 @@
 import torch
 import torch.nn as nn
 from torch_geometric.nn import TransformerConv, global_mean_pool
-from angular_loss import ArcFace
 
-class GraphTransformerEncoder(nn.Module):
-    def __init__(self, input_dim, hidden_dim, output_dim, num_layers=3, num_heads=6, C=3, model_state_path = None):
-        super(GraphTransformerEncoder, self).__init__()
+class BaseModel(nn.Module):
+    def __init__(self, input_dim, hidden_dim, output_dim, num_layers=3, num_heads=8, model_state_path = None):
+        super(BaseModel, self).__init__()
 
         self.features = {}
 
         self.layers = nn.ModuleList()
         self.num_layers = num_layers
-        self.C = C
 
         self.gtconv1 = TransformerConv(input_dim, hidden_dim, heads=num_heads, concat=False)
         self.gtconv2 = TransformerConv(hidden_dim, hidden_dim, heads=num_heads, concat=False)
@@ -23,10 +21,7 @@ class GraphTransformerEncoder(nn.Module):
         self.fc2 = nn.Linear(hidden_dim, hidden_dim)
 
         self.dropout = nn.Dropout(0.3)
-
-        self.arcface = ArcFace(num_features=hidden_dim, num_classes=output_dim)
-
-        # self.softmax = nn.Softmax(dim=1)
+        self.softmax = nn.Softmax(dim=1)
 
         if model_state_path is not None:
             self.load(model_state_path)
@@ -50,15 +45,12 @@ class GraphTransformerEncoder(nn.Module):
 
         x = torch.relu(self.fc1(x))
         # x = self.dropout(x)
-        x = torch.relu(self.fc2(x))
+        logit = torch.relu(self.fc2(x))
         # x = self.dropout(x)
 
+        pred = self.softmax(logit)
 
-        logit = self.arcface(x)
-
-        # pred = self.softmax(logit)
-
-        return logit
+        return pred
     
 
     def load(self, model_state_path):

@@ -9,7 +9,7 @@ from torch_geometric.data import DataLoader
 import shutil
 import os
 from session_dataset import SessionDataset
-from graph_transformer import GraphTransformerEncoder
+from dynaampg import GraphTransformerEncoder
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from torch.nn.functional import normalize
