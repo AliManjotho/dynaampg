@@ -159,7 +159,7 @@ https://drive.google.com/file/d/1fgvWeshlc10raOoQfPfEXtsp73O4fa4L/view?usp=shari
 
 3. Run the script
 ```
- plot_all_grams.py
+ visualization/plot_all_grams.py
 ```
 ![Alt text](assets/fig_gram_matrices.png?raw=true "Gram Matrices")
 
@@ -169,7 +169,7 @@ https://drive.google.com/file/d/1fgvWeshlc10raOoQfPfEXtsp73O4fa4L/view?usp=shari
 
 1. Run the script
 ```
- plot_data_distribution.py
+ visualization/plot_data_distribution.py
 ```
 ![Alt text](assets/fig_dataset_distribution.png?raw=true "Data Distribution")
 
@@ -177,7 +177,7 @@ https://drive.google.com/file/d/1fgvWeshlc10raOoQfPfEXtsp73O4fa4L/view?usp=shari
 
 1. Run the script
 ```
- plot_dynamic_angular_margins.py
+ visualization/plot_dynamic_angular_margins.py
 ``` 
 ![Alt text](assets/fig_dynamic_angular_margins.png?raw=true "Dynamic Angular Margins")
 
@@ -185,18 +185,18 @@ https://drive.google.com/file/d/1fgvWeshlc10raOoQfPfEXtsp73O4fa4L/view?usp=shari
 
 1. Run the script (ID Eval)
 ```
- plot_confusion_matrx.py
+ visualization/plot_confusion_matrx.py
 ``` 
 ![Alt text](assets/fig_confusion_matrices.png?raw=true "Confusion Matrices")
 2. Run the script (OOD Eval)
 ```
- plot_ood_confusion_matrx.py
+ visualization/plot_ood_confusion_matrx.py
 ``` 
 ![Alt text](assets/fig_ood_confusion_matrices.png?raw=true "OOD Confusion Matrices")
 # Plot Threshold
 
 1. Run the script
 ```
- plot_threshold.py
+ visualization/plot_threshold.py
 ``` 
 ![Alt text](assets/fig_threshold_plot.png?raw=true "Threshold")
