@@ -74,7 +74,7 @@ def plot_class_distribution():
     # Adjust layout
     plt.tight_layout()
     plt.subplots_adjust(wspace=0.5)
-    plt.savefig('fig_dataset_distribution.png')
+    plt.savefig('visualization/fig_dataset_distribution.png')
     plt.show()
 
 # Call the function to plot the distributions

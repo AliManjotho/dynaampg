@@ -40,6 +40,6 @@ plt.grid(True)
 plt.xlim(0.0, 4.0)  # Limit the x-axis between 0.0 and 4.0
 
 plt.tight_layout(pad=0)
-plt.savefig('fig_threshold_plot.png')
+plt.savefig('visualization/fig_threshold_plot.png')
 plt.show()
 

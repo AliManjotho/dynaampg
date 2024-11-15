@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import numpy as np
 import torch
 import torch.nn as nn
@@ -5,9 +9,8 @@ import torch.nn.functional as F
 import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
-from torch_geometric.data import DataLoader
+from torch_geometric.loader import DataLoader
 import shutil
-import os
 from session_dataset import SessionDataset
 from graph_transformer import GraphTransformerEncoder
 import matplotlib.pyplot as plt

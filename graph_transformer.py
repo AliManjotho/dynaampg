@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 from torch_geometric.nn import TransformerConv, global_mean_pool
+from angular_loss import ArcFace
 
 class GraphTransformerEncoder(nn.Module):
     def __init__(self, input_dim, hidden_dim, output_dim, num_layers=3, num_heads=6, C=3, model_state_path = None):
@@ -18,11 +19,12 @@ class GraphTransformerEncoder(nn.Module):
         self.gtconv4 = TransformerConv(hidden_dim, hidden_dim, heads=num_heads, concat=False)
         self.gtconv5 = TransformerConv(hidden_dim, hidden_dim, heads=num_heads, concat=False)
 
-        self.fc1 = nn.Linear(hidden_dim, 128)
-        self.fc2 = nn.Linear(128, 64)
-        self.fc3 = nn.Linear(64, output_dim)
+        self.fc1 = nn.Linear(hidden_dim, hidden_dim)
+        self.fc2 = nn.Linear(hidden_dim, hidden_dim)
 
         self.dropout = nn.Dropout(0.3)
+
+        self.arcface = ArcFace(num_features=hidden_dim, num_classes=output_dim)
 
         # self.softmax = nn.Softmax(dim=1)
 
@@ -50,7 +52,9 @@ class GraphTransformerEncoder(nn.Module):
         # x = self.dropout(x)
         x = torch.relu(self.fc2(x))
         # x = self.dropout(x)
-        logit = self.fc3(x)
+
+
+        logit = self.arcface(x)
 
         # pred = self.softmax(logit)
 

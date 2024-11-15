@@ -87,7 +87,7 @@ def plot_features(features):
         cax = divider.append_axes("right", size="5%", pad=0.05)
         plt.colorbar(im, cax=cax)
         plt.tight_layout()
-    plt.savefig('features.png')
+    plt.savefig('visualization/features.png')
     plt.show()
 
 
@@ -131,7 +131,7 @@ def plot_all_gram_matrices(data, fontsize=28, cmap='coolwarm'):
             cbar.ax.tick_params(labelsize=fontsize) 
             plt.tight_layout()
                 
-    plt.savefig('fig_gram_matrices.png')
+    plt.savefig('visualization/fig_gram_matrices.png')
     plt.show()
 
 

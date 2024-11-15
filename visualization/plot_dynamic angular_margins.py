@@ -4,6 +4,9 @@ import matplotlib.cm as cm
 import pandas as pd
 import matplotlib.colors as mcolors
 import random
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import *
 
 plt.rcParams['font.family'] = 'Times New Roman'
@@ -195,7 +198,7 @@ if __name__ == '__main__':
     draw_arcface_plot(axs[2], dataset='tor', C=3)
     plt.subplots_adjust(wspace=0.1)
     plt.tight_layout(pad=0)
-    plt.savefig('fig_dynamic_angular_margins.png')
+    plt.savefig('visualization/fig_dynamic_angular_margins.png')
     plt.show()
 
     
