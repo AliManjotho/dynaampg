@@ -7,13 +7,17 @@ from pathlib import Path
 import json
 import numpy as np
 from utils import *
+import os
+from config import *
 
 
 class SessionDataset(InMemoryDataset):
-    def __init__(self, root, transform=None, pre_transform=None, pre_filter=None):
+    def __init__(self, root, exclude_classes=None, transform=None, pre_transform=None, pre_filter=None):
         super(SessionDataset, self).__init__(root, transform, pre_transform, pre_filter)
         self.data, self.slices = torch.load(self.processed_paths[0])
-
+        self.root = root
+        self.exclude_classes = exclude_classes
+        self.new_class_labels = []
 
     @property
     def raw_file_names(self):
@@ -30,6 +34,14 @@ class SessionDataset(InMemoryDataset):
 
     def process(self):
 
+        with open(os.path.join(self.root, 'raw/meta.json'), 'r') as file_handle:
+            meta_json_data = json.load(file_handle)
+            class_labels = meta_json_data['class_labels']
+
+        new_class_labels = [label for label in class_labels if label not in self.exclude_classes]
+        
+
+
         pbar = tqdm(total=len(self.raw_paths), desc='Files Done: ')
 
         data_list = []
@@ -42,7 +54,10 @@ class SessionDataset(InMemoryDataset):
                 features = json_data["features"]
                 edge_indices = json_data["edge_indices"]
                 class_label = json_data["class"]
-                class_vector = json_data["class_vector"]
+
+                class_vector = np.zeros(len(new_class_labels), dtype=int)
+                index = new_class_labels.index(class_label)
+                class_vector[index] = 1
 
                 edge_index = torch.tensor(np.array(edge_indices), dtype=torch.long)
                 x = torch.tensor(features, dtype=torch.float)
