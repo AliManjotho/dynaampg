@@ -7,7 +7,7 @@ from torch.utils.tensorboard import SummaryWriter
 import shutil
 import os
 from config import *
-
+from utils import *
 # Training loop
 def train(train_loader, model, optimizer, criterion, device):
     model = model.to(device)
@@ -62,7 +62,7 @@ if __name__ == "__main__":
   
     writer = SummaryWriter()
 
-    dataset = SessionDataset(root=dataset)
+    dataset = SessionDataset(root=dataset, class_labels=iscx_vpn_get_unique_labels())
     torch.manual_seed(12345)
     dataset = dataset.shuffle()
 

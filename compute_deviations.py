@@ -19,7 +19,7 @@ import shutil
 import os
 from gram_matrix import *
 from config import *
-
+from utils import *
 
 
 
@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    dataset = SessionDataset(root=ISCX_VPN_DATASET_DIR)
+    dataset = SessionDataset(root=ISCX_VPN_DATASET_DIR, class_labels=iscx_vpn_get_unique_labels())
     torch.manual_seed(12345)
     dataset = dataset.shuffle()
 
@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
 
 
-    dataset_ood = SessionDataset(root=OOD_DATASET_DIR)
+    dataset_ood = SessionDataset(root=OOD_DATASET_DIR, class_labels=iscx_vpn_get_unique_labels())
     torch.manual_seed(12345)
     dataset_ood = dataset_ood.shuffle()
 

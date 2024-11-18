@@ -9,7 +9,7 @@ import os
 from config import *
 from models.base_model import BaseModel
 from gram_matrix import GRAM_TYPE
-
+from utils import *
 # Training loop
 def train(train_loader, model, optimizer, criterion, device):
     model = model.to(device)
@@ -87,8 +87,8 @@ if __name__ == "__main__":
   
     writer = SummaryWriter()
 
-    dataset_id = SessionDataset(root=dataset, exclude_classes=['email'])
-    dataset_ood = SessionDataset(root=dataset, exclude_classes=["chat", "streaming", "file_transfer", "voip", "p2p","vpn_email", "vpn_chat", "vpn_streaming", "vpn_file_transfer", "vpn_voip", "vpn_p2p"])
+    dataset_id = SessionDataset(root=dataset, class_labels=iscx_vpn_get_unique_labels(), exclude_classes=['email'])
+    dataset_ood = SessionDataset(root=dataset, class_labels=iscx_vpn_get_unique_labels(), exclude_classes=["chat", "streaming", "file_transfer", "voip", "p2p","vpn_email", "vpn_chat", "vpn_streaming", "vpn_file_transfer", "vpn_voip", "vpn_p2p"])
     torch.manual_seed(12345)
     dataset_id = dataset_id.shuffle()
     dataset_ood = dataset_ood.shuffle()

@@ -9,14 +9,17 @@ import numpy as np
 from utils import *
 import os
 from config import *
+from utils import *
 
 
 class SessionDataset(InMemoryDataset):
-    def __init__(self, root, exclude_classes=None, transform=None, pre_transform=None, pre_filter=None):
+    def __init__(self, root, class_labels, exclude_classes=None, transform=None, pre_transform=None, pre_filter=None):
+        self.exclude_classes = exclude_classes
+        self.class_labels = class_labels
         super(SessionDataset, self).__init__(root, transform, pre_transform, pre_filter)
         self.data, self.slices = torch.load(self.processed_paths[0])
         self.root = root
-        self.exclude_classes = exclude_classes
+                
         self.new_class_labels = []
 
     @property
@@ -34,12 +37,10 @@ class SessionDataset(InMemoryDataset):
 
     def process(self):
 
-        with open(os.path.join(self.root, 'raw/meta.json'), 'r') as file_handle:
-            meta_json_data = json.load(file_handle)
-            class_labels = meta_json_data['class_labels']
-
-        new_class_labels = [label for label in class_labels if label not in self.exclude_classes]
-        
+        if self.exclude_classes is not None and len(self.exclude_classes) > 0:
+            self.new_class_labels = [label for label in self.class_labels if label not in self.exclude_classes]
+        else:
+            self.new_class_labels = self.class_labels   
 
 
         pbar = tqdm(total=len(self.raw_paths), desc='Files Done: ')
@@ -50,13 +51,12 @@ class SessionDataset(InMemoryDataset):
             with open(raw_file, 'r') as file_handle:
                 json_data = json.load(file_handle)
                 
-                id = json_data["id"]
                 features = json_data["features"]
                 edge_indices = json_data["edge_indices"]
                 class_label = json_data["class"]
 
-                class_vector = np.zeros(len(new_class_labels), dtype=int)
-                index = new_class_labels.index(class_label)
+                class_vector = np.zeros(len(self.new_class_labels), dtype=int)
+                index = self.new_class_labels.index(class_label)
                 class_vector[index] = 1
 
                 edge_index = torch.tensor(np.array(edge_indices), dtype=torch.long)

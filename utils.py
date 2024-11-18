@@ -133,20 +133,6 @@ def count_classes(dataset_path, dataset):
     print('')
 
 
-        
-
-
-if __name__=='__main__':
-    packets_per_session = 10
-
-    # Process ISCX dataset
-    iscx_dataset_path = r'D:\SH\TrafficClassification\vpn-gcn\datasets\ISCX'
-    count_classes(iscx_dataset_path, DATASET.ISCX_VPN)
-
-    # Process VNAT-VPN dataset
-    vnat_dataset_path = r'D:\SH\TrafficClassification\vpn-gcn\datasets\VNAT-VPN'
-    count_classes(vnat_dataset_path, DATASET.VNAT)
-
 
     
 

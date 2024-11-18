@@ -12,7 +12,7 @@ import torchvision.transforms as transforms
 from torch_geometric.loader import DataLoader
 import shutil
 from session_dataset import SessionDataset
-from dynaampg import GraphTransformerEncoder
+from dynaampg import DynAAMPG
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from torch.nn.functional import normalize
@@ -22,6 +22,8 @@ import shutil
 import os
 from gram_matrix import *
 from config import *
+from utils import *
+
 
 def get_mean_grams(pre_trained_weights):
     batch_size = 32
@@ -31,14 +33,14 @@ def get_mean_grams(pre_trained_weights):
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    dataset = SessionDataset(root=ISCX_VPN_DATASET_DIR)
+    dataset = SessionDataset(root=ISCX_VPN_DATASET_DIR, class_labels=iscx_vpn_get_unique_labels())
     torch.manual_seed(12345)
     dataset = dataset.shuffle()
 
     test_dataset = dataset[int(len(dataset) * 0.7):]
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-    model = GraphTransformerEncoder(input_dim=dataset.num_node_features, hidden_dim=512, output_dim=dataset.num_classes, num_layers=3, num_heads=4, C=C, model_state_path=pre_trained_weights)
+    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=512, output_dim=dataset.num_classes, num_layers=3, num_heads=4, C=C, model_state_path=pre_trained_weights)
 
     dataiter = iter(test_loader)
     session = next(dataiter)
@@ -58,14 +60,14 @@ def get_id_grams(num_samples, pre_trained_weights):
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    dataset = SessionDataset(root=ISCX_VPN_DATASET_DIR)
+    dataset = SessionDataset(root=ISCX_VPN_DATASET_DIR, class_labels=iscx_vpn_get_unique_labels())
     torch.manual_seed(12345)
     dataset = dataset.shuffle()
 
     test_dataset = dataset[int(len(dataset) * 0.7):]
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-    model = GraphTransformerEncoder(input_dim=dataset.num_node_features, hidden_dim=512, output_dim=dataset.num_classes, num_layers=3, num_heads=4, C=C, model_state_path=pre_trained_weights)
+    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=512, output_dim=dataset.num_classes, num_layers=3, num_heads=4, C=C, model_state_path=pre_trained_weights)
 
     dataiter = iter(test_loader)
     s = next(dataiter)
@@ -88,14 +90,14 @@ def get_ood_grams(num_samples, masks, ref_gram, pre_trained_weights):
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    dataset = SessionDataset(root=OOD_DATASET_DIR)
+    dataset = SessionDataset(root=OOD_DATASET_DIR, class_labels=iscx_vpn_get_unique_labels())
     torch.manual_seed(12345)
     dataset = dataset.shuffle()
 
     test_dataset = dataset[int(len(dataset) * 0.7):]
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-    model = GraphTransformerEncoder(input_dim=dataset.num_node_features, hidden_dim=512, output_dim=dataset.num_classes, num_layers=3, num_heads=4, C=C, model_state_path=pre_trained_weights)
+    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=512, output_dim=dataset.num_classes, num_layers=3, num_heads=4, C=C, model_state_path=pre_trained_weights)
 
     dataiter = iter(test_loader)
 
