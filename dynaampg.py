@@ -10,6 +10,8 @@ class DynAAMPG(nn.Module):
         super(DynAAMPG, self).__init__()
 
         self.features = {}
+        self.actual_logits = None
+        self.modified_logits = None
 
         self.layers = nn.ModuleList()
         self.num_layers = num_layers
@@ -54,7 +56,11 @@ class DynAAMPG(nn.Module):
         x = torch.relu(self.fc2(x))
         # x = self.dropout(x)
 
+        self.actual_logits = x
+
         logit = self.dynaam(x, label_one_hot)
+
+        self.modified_logits = logit
 
         return logit
     

@@ -1,5 +1,9 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import torch
-from torch_geometric.loader import DataLoader
+from torch_geometric.data import DataLoader
 from session_dataset import SessionDataset
 from dynaampg import DynAAMPG
 from config import *
@@ -25,6 +29,10 @@ def plot_logit_distribution(logits, labels, label_names, dataset_name = 'ISCX-VP
 
 
 if __name__ == "__main__":
+
+    plt.rcParams.update({
+    "text.usetex": True,
+    "font.family": 'Times New Roman'})
 
     iscx_vpn_labels = iscx_vpn_get_unique_labels()
     labels = np.load(os.path.join(SAVED_LOGITS_DIR, "labels.npy"))   

@@ -5,11 +5,11 @@ import torch.nn.functional as F
 import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
-from torch_geometric.data import DataLoader
+from torch_geometric.loader import DataLoader
 import shutil
 import os
 from session_dataset import SessionDataset
-from dynaampg import GraphTransformerEncoder
+from dynaampg import DynAAMPG
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from torch.nn.functional import normalize
@@ -27,14 +27,15 @@ from utils import *
 if __name__ == "__main__":
 
     batch_size = 32
-    epochs = 500
     dk = 512
     C = 3
-    pre_trained_weights= os.path.join(SAVED_MODELS_DIR, 'gformer_model_weights_500.pth')
+    num_layers = 3
+    num_heads = 8
+    dataset = ISCX_VPN_DATASET_DIR
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    dataset = SessionDataset(root=ISCX_VPN_DATASET_DIR, class_labels=iscx_vpn_get_unique_labels())
+    dataset = SessionDataset(root=dataset, class_labels=iscx_vpn_get_unique_labels())
     torch.manual_seed(12345)
     dataset = dataset.shuffle()
 
@@ -45,8 +46,8 @@ if __name__ == "__main__":
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-    model = GraphTransformerEncoder(input_dim=dataset.num_node_features, hidden_dim=512, output_dim=dataset.num_classes, num_layers=3, num_heads=4, C=C, model_state_path=pre_trained_weights)
-  
+    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=dk, output_dim=dataset.num_classes, num_layers=num_layers, num_heads=num_heads, C=C,  model_state_path=BEST_MODEL_STATE_PATH)
+
     dataiter = iter(test_loader)
     mean_sessions = next(dataiter)
     mean_output = model.infer(mean_sessions, device)    

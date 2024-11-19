@@ -1,5 +1,8 @@
 from pathlib import Path
 from enum import Enum
+from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
+import torch
 
 class DATASET(Enum):
     ISCX_VPN=0
@@ -136,3 +139,16 @@ def count_classes(dataset_path, dataset):
 
     
 
+def reduce_dimentions(logits, method='PCA', n_components=2): 
+    n_samples = len(logits)
+    perplexity = min(30, n_samples // 4)
+    reduced_features = []
+
+    if method == 'PCA':
+        pca = PCA(n_components)
+        reduced_features = pca.fit_transform(logits)
+    elif method == 't-SNE':
+        tsne = TSNE(n_components, random_state=42, perplexity=perplexity)
+        reduced_features = tsne.fit_transform(logits)
+
+    return torch.tensor(reduced_features)

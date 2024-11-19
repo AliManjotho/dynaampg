@@ -27,20 +27,22 @@ from utils import *
 
 def get_mean_grams(pre_trained_weights):
     batch_size = 32
-    epochs = 500
     dk = 512
     C = 3
+    num_layers = 3
+    num_heads = 8
+    dataset = ISCX_VPN_DATASET_DIR
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    dataset = SessionDataset(root=ISCX_VPN_DATASET_DIR, class_labels=iscx_vpn_get_unique_labels())
+    dataset = SessionDataset(root=dataset, class_labels=iscx_vpn_get_unique_labels())
     torch.manual_seed(12345)
     dataset = dataset.shuffle()
 
     test_dataset = dataset[int(len(dataset) * 0.7):]
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=512, output_dim=dataset.num_classes, num_layers=3, num_heads=4, C=C, model_state_path=pre_trained_weights)
+    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=dk, output_dim=dataset.num_classes, num_layers=num_layers, num_heads=num_heads, C=C,  model_state_path=BEST_MODEL_STATE_PATH)
 
     dataiter = iter(test_loader)
     session = next(dataiter)
@@ -54,20 +56,22 @@ def get_id_grams(num_samples, pre_trained_weights):
     grams = []
 
     batch_size = 32
-    epochs = 500
     dk = 512
     C = 3
+    num_layers = 3
+    num_heads = 8
+    dataset = ISCX_VPN_DATASET_DIR
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    dataset = SessionDataset(root=ISCX_VPN_DATASET_DIR, class_labels=iscx_vpn_get_unique_labels())
+    dataset = SessionDataset(root=dataset, class_labels=iscx_vpn_get_unique_labels())
     torch.manual_seed(12345)
     dataset = dataset.shuffle()
 
     test_dataset = dataset[int(len(dataset) * 0.7):]
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=512, output_dim=dataset.num_classes, num_layers=3, num_heads=4, C=C, model_state_path=pre_trained_weights)
+    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=dk, output_dim=dataset.num_classes, num_layers=num_layers, num_heads=num_heads, C=C,  model_state_path=BEST_MODEL_STATE_PATH)
 
     dataiter = iter(test_loader)
     s = next(dataiter)
@@ -84,9 +88,11 @@ def get_ood_grams(num_samples, masks, ref_gram, pre_trained_weights):
     grams = []
 
     batch_size = 32
-    epochs = 500
     dk = 512
     C = 3
+    num_layers = 3
+    num_heads = 8
+    dataset = OOD_DATASET_DIR
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -97,7 +103,7 @@ def get_ood_grams(num_samples, masks, ref_gram, pre_trained_weights):
     test_dataset = dataset[int(len(dataset) * 0.7):]
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=512, output_dim=dataset.num_classes, num_layers=3, num_heads=4, C=C, model_state_path=pre_trained_weights)
+    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=dk, output_dim=dataset.num_classes, num_layers=num_layers, num_heads=num_heads, C=C,  model_state_path=BEST_MODEL_STATE_PATH)
 
     dataiter = iter(test_loader)
 
@@ -123,7 +129,7 @@ def get_ood_grams(num_samples, masks, ref_gram, pre_trained_weights):
 
 if __name__ == "__main__":
 
-    pre_trained_weights = os.path.join(SAVED_MODELS_DIR, 'gformer_model_weights_500.pth')
+    pre_trained_weights = os.path.join(SAVED_MODELS_DIR, 'gformer_model_weights_483.pth')
 
     mean_grams = get_mean_grams(pre_trained_weights)
     id_grams = get_id_grams(2, pre_trained_weights)

@@ -5,5 +5,4 @@
 *.pt
 *.pth
 *.th
-runs/
 datasets/
