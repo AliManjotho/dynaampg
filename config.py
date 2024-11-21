@@ -17,6 +17,7 @@ SAVED_DEVS_DIR = os.path.join(BASE_DIR, 'saved_devs')
 SAVED_EVALS_DIR = os.path.join(BASE_DIR, 'saved_evals')
 SAVED_MARGINS_DIR = os.path.join(BASE_DIR, 'saved_margins')
 SAVED_LOGITS_DIR = os.path.join(BASE_DIR, 'saved_logits')
+SAVED_PCA_TSNE_DIR = os.path.join(BASE_DIR, 'saved_pca_tsne')
 
 SAVED_TRAIN_VAL_CURVES_DIR = os.path.join(BASE_DIR, 'logs\\Nov19_17-03-25')
 
