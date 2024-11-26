@@ -85,6 +85,15 @@ def preprocess(dataset_path, packets_per_session, dataset):
             elif dataset == DATASET.VNAT:
                 class_label = vnat_get_class_label(Path(file).name)
                 one_hot_vector = vnat_get_one_hot(class_label)
+            elif dataset == DATASET.ISCX_TOR:
+                class_label = iscx_tor_get_class_label(Path(file).name)
+                one_hot_vector = iscx_tor_get_one_hot(class_label)
+            elif dataset == DATASET.NETWORK_TRAFFIC:
+                class_label = network_traffic_get_class_label(Path(file).name)
+                one_hot_vector = network_traffic_get_one_hot(class_label)
+            elif dataset == DATASET.REALTIME:
+                class_label = realtime_get_class_label(Path(file).name)
+                one_hot_vector = realtime_get_one_hot(class_label)
             
             
             id = str(file_number)
@@ -114,9 +123,21 @@ if __name__=='__main__':
     packets_per_session = 10
 
     # Process ISCX dataset
-    preprocess(ISCX_VPN_DATASET_DIR, packets_per_session, DATASET.ISCX_VPN)
+    # preprocess(ISCX_VPN_DATASET_DIR, packets_per_session, DATASET.ISCX_VPN)
 
     # Process VNAT-VPN dataset
-    preprocess(VNAT_DATASET_DIR, packets_per_session, DATASET.VNAT)
+    # preprocess(VNAT_DATASET_DIR, packets_per_session, DATASET.VNAT)
+
+    # Process ISCX-Tor dataset
+    # preprocess(ISCX_TOR_DATASET_DIR, packets_per_session, DATASET.ISCX_TOR)
+    
+    # Process NetworkTraffic dataset
+    # preprocess(NETWORK_TRAFFIC_DATASET_DIR, packets_per_session, DATASET.NETWORK_TRAFFIC)
+
+    # Process Realtime dataset
+    preprocess(REALTIME_DATASET_DIR, packets_per_session, DATASET.REALTIME)
+    
+
+
 
     print('ALL DONE!!!!!')

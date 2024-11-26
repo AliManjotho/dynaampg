@@ -17,7 +17,7 @@ font_size = 20
 csv_files = [os.path.join(SAVED_EVALS_DIR, 'ISCX-VPN.csv'), os.path.join(SAVED_EVALS_DIR, 'VNAT.csv'), os.path.join(SAVED_EVALS_DIR, 'ISCX-Tor.csv')]
 
 # Plot three confusion matrices in a single row
-fig, axes = plt.subplots(1, 3, figsize=(30, 10))
+fig, axes = plt.subplots(1, 3, figsize=(35, 11))
 
 for index, csv_file in enumerate(csv_files):
     # Read the confusion matrix and class labels from the CSV file
@@ -43,11 +43,15 @@ for index, csv_file in enumerate(csv_files):
 
     if index == 0:
         value_font = font_size - 5
+    elif index == 1:
+        value_font = font_size
+    elif index == 2:
+        value_font = font_size - 5
     else:
         value_font = font_size
 
     for i, j in np.ndindex(cm_percentage.shape):
-        ax.text(j, i, f"{cm_percentage[i, j]:.3f}%",
+        ax.text(j, i, f"{cm_percentage[i, j]:.2f}%",
                 ha="center", va="center",
                 color="white" if cm_percentage[i, j] > thresh else "black",
                 fontsize=value_font)

@@ -66,10 +66,17 @@ def split_sessions(dataset_path, splitcap_path):
 if __name__=='__main__':
     
     # Split sessions for ISCX dataset
-    pcapng_to_pcap(ISCX_VPN_DATASET_DIR)
-    split_sessions(ISCX_VPN_DATASET_DIR, SPLITCAP_DIR)
+    # pcapng_to_pcap(ISCX_VPN_DATASET_DIR)
+    # split_sessions(ISCX_VPN_DATASET_DIR, SPLITCAP_DIR)
 
     # Split sessions for VNAT-VPN dataset
-    split_sessions(VNAT_DATASET_DIR, SPLITCAP_DIR)
+    # split_sessions(VNAT_DATASET_DIR, SPLITCAP_DIR)
 
+    # print('ALL DONE!!!!!')
+
+    # Split sessions for ISCX-Tor dataset
+
+    dataset_dir = r'C:\Datasets\Realtime'
+    pcapng_to_pcap(dataset_dir)
+    split_sessions(dataset_dir, SPLITCAP_PATH)
     print('ALL DONE!!!!!')

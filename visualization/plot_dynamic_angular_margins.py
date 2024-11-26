@@ -11,8 +11,7 @@ from config import *
 
 plt.rcParams['font.family'] = 'Times New Roman'
 
-def draw_arcface_plot(ax, dataset='iscx', C=3):
-
+def draw_arcface_plot(ax, dataset='iscx', C=3, beta=6, legend_columns=2):
     file_path = os.path.join(SAVED_MARGINS_DIR, 'iscx.xlsx')
     title = ''
 
@@ -63,11 +62,12 @@ def draw_arcface_plot(ax, dataset='iscx', C=3):
 
     # Generate angles for each class centroid, with added dynamic margin between classes
     max_instances = max(num_instances)
-    dynamic_margin_scaling = np.pi / 6  # Maximum additional margin scaling for dynamic margins
+    dynamic_margin_scaling = np.pi / beta  # Maximum additional margin scaling for dynamic margins
     dynamic_margins = min_margin_between_classes + ((max_instances - num_instances) / max_instances) * dynamic_margin_scaling  # Dynamic margin inversely proportional to number of samples
 
     angles = np.cumsum(dynamic_margins) % (2 * np.pi)
     centroids = np.array([np.cos(angles), np.sin(angles)]) * radius
+
 
     # Create a list variable for class margins
     class_margins = (num_instances / total_instances) * (2 * np.pi - sum(dynamic_margins))  # Adjust to account for margins
@@ -178,7 +178,7 @@ def draw_arcface_plot(ax, dataset='iscx', C=3):
     ax.set_ylim(-radius - 2, radius + 2)
     ax.set_title(title, fontsize=font_size + 4, y=0, pad=-30)
     ax.set_aspect('equal')
-    ax.legend(bbox_to_anchor=(0.5, -0.1), loc='upper center', borderaxespad=0., fontsize=font_size, ncol=2)
+    ax.legend(bbox_to_anchor=(0.5, -0.1), loc='upper center', borderaxespad=0., fontsize=font_size, ncol=legend_columns, columnspacing=0.2, labelspacing=0.2)
 
     # Hide border and tick lines
     ax.spines['top'].set_visible(False)
@@ -193,12 +193,12 @@ def draw_arcface_plot(ax, dataset='iscx', C=3):
 
 if __name__ == '__main__':
     fig, axs = plt.subplots(1, 3, figsize=(22, 13))  # Create a figure with 3 subplots arranged horizontally
-    draw_arcface_plot(axs[0], dataset='iscx', C=3)
-    draw_arcface_plot(axs[1], dataset='vnat', C=3)
-    draw_arcface_plot(axs[2], dataset='tor', C=3)
+    draw_arcface_plot(axs[0], dataset='iscx', C=3, beta=6, legend_columns=3)
+    draw_arcface_plot(axs[1], dataset='vnat', C=3, beta=6, legend_columns=2)
+    draw_arcface_plot(axs[2], dataset='tor', C=3, beta=12, legend_columns=4)
     plt.subplots_adjust(wspace=0.1)
     plt.tight_layout(pad=0)
-    plt.savefig('visualization/fig_dynamic_angular_margins.png')
+    plt.savefig('visualization/fig_arcface_results.png')
     plt.show()
 
     

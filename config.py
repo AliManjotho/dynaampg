@@ -9,8 +9,10 @@ BEST_MODEL_STATE_PATH = os.path.join(BASE_DIR, 'saved_models\\gformer_model_weig
 # Dataset paths
 ISCX_VPN_DATASET_DIR = os.path.join(BASE_DIR, 'datasets\\ISCX_VPN')
 VNAT_DATASET_DIR = os.path.join(BASE_DIR, 'datasets\\VNAT')
+ISCX_TOR_DATASET_DIR = os.path.join(BASE_DIR, 'datasets\\ISCX_Tor')
 OOD_DATASET_DIR = os.path.join(BASE_DIR, 'datasets\\OOD')
-
+NETWORK_TRAFFIC_DATASET_DIR = os.path.join(BASE_DIR, 'datasets\\NetworkTraffic')
+REALTIME_DATASET_DIR = os.path.join(BASE_DIR, 'datasets\\Realtime')
 
 SAVED_MODELS_DIR = os.path.join(BASE_DIR, 'saved_models')
 SAVED_DEVS_DIR = os.path.join(BASE_DIR, 'saved_devs')
@@ -25,5 +27,7 @@ SAVED_TRAIN_VAL_CURVES_DIR = os.path.join(BASE_DIR, 'logs\\Nov19_17-03-25')
 TENSORBOARD_LOG_DIR = os.path.join(BASE_DIR, 'runs')
 
 # SplitCap path
-SPLITCAP_DIR = os.path.join(BASE_DIR, 'SplitCap.exe')
+SPLITCAP_PATH = os.path.join(BASE_DIR, 'SplitCap.exe')
+
+TEMP_CAPTURE_DIR = os.path.join(BASE_DIR, 'temp')
 

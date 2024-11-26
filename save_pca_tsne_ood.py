@@ -39,15 +39,16 @@ def save_pca_tsne(dataset_name, dataset_labels, method, num_ood_samples, dist_th
 
     np.save(os.path.join(SAVED_PCA_TSNE_DIR, f"{dataset_name.lower()}_pca.npy"), reduced_features_pca)
     np.save(os.path.join(SAVED_PCA_TSNE_DIR, f"{dataset_name.lower()}_t-sne.npy"), reduced_features_tsne)
-    np.save(os.path.join(SAVED_PCA_TSNE_DIR, f"{dataset_name.lower()}_labels.npy"), labels_int)
+    np.save(os.path.join(SAVED_PCA_TSNE_DIR, f"{dataset_name.lower()}_labels.npy"), labels)
 
 
 if __name__ == "__main__":
 
-    iscx_vpn_dataset = SessionDataset(root=ISCX_VPN_DATASET_DIR, class_labels=iscx_vpn_get_unique_labels())
-    vnat_dataset = SessionDataset(root=VNAT_DATASET_DIR, class_labels=vnat_get_unique_labels())
+    # iscx_vpn_dataset = SessionDataset(root=ISCX_VPN_DATASET_DIR, class_labels=iscx_vpn_get_unique_labels())
+    # vnat_dataset = SessionDataset(root=VNAT_DATASET_DIR, class_labels=vnat_get_unique_labels())
+    iscx_tor_dataset = SessionDataset(root=ISCX_TOR_DATASET_DIR, class_labels=iscx_tor_get_unique_labels())
 
-    save_pca_tsne(iscx_vpn_dataset, iscx_vpn_get_unique_labels(), 'ISCX-VPN')
-    save_pca_tsne(vnat_dataset, vnat_get_unique_labels(), 'VNAT')
-
+    # save_pca_tsne(iscx_vpn_dataset, iscx_vpn_get_unique_labels(), 'ISCX-VPN')
+    # save_pca_tsne(vnat_dataset, vnat_get_unique_labels(), 'VNAT')
+    save_pca_tsne(iscx_tor_dataset, iscx_tor_get_unique_labels(), 'ISCX-TOR')
 
