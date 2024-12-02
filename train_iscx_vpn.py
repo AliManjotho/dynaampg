@@ -91,7 +91,7 @@ if __name__ == "__main__":
         writer.add_scalars('Accuracy', {'Train Acc':train_acc, 'Val Acc':val_acc} , epoch)
 
         if train_acc > max_train_acc:
-            torch.save(model.state_dict(), os.path.join(SAVED_MODELS_DIR, "gformer_model_weights_" + str(epoch) + ".pth"))
+            torch.save(model.state_dict(), os.path.join(SAVED_MODELS_DIR, "gformer_model_weights_iscx_vpn_" + str(epoch) + ".pth"))
             max_train_acc = train_acc
 
 

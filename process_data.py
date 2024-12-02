@@ -135,8 +135,9 @@ if __name__=='__main__':
     # preprocess(NETWORK_TRAFFIC_DATASET_DIR, packets_per_session, DATASET.NETWORK_TRAFFIC)
 
     # Process Realtime dataset
-    preprocess(REALTIME_DATASET_DIR, packets_per_session, DATASET.REALTIME)
+    # preprocess(REALTIME_DATASET_DIR, packets_per_session, DATASET.REALTIME)
     
+    preprocess(r'C:\Datasets\ytube', packets_per_session, DATASET.REALTIME)
 
 
 

@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     loader = DataLoader(dataset, batch_size=batch_size, shuffle=False)
 
-    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=dk, output_dim=dataset.num_classes, num_layers=num_layers, num_heads=num_heads, C=C,  model_state_path=BEST_MODEL_STATE_PATH)
+    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=dk, output_dim=dataset.num_classes, num_layers=num_layers, num_heads=num_heads, C=C,  model_state_path=BEST_MODEL_STATE_PATH_ISCX_VPN)
     model.to(device)
 
     labels = []

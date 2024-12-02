@@ -76,7 +76,7 @@ if __name__=='__main__':
 
     # Split sessions for ISCX-Tor dataset
 
-    dataset_dir = r'C:\Datasets\Realtime'
+    dataset_dir = r'C:\Datasets\ytube'
     pcapng_to_pcap(dataset_dir)
     split_sessions(dataset_dir, SPLITCAP_PATH)
     print('ALL DONE!!!!!')

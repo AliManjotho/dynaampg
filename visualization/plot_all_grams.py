@@ -42,7 +42,7 @@ def get_mean_grams(pre_trained_weights):
     test_dataset = dataset[int(len(dataset) * 0.7):]
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=dk, output_dim=dataset.num_classes, num_layers=num_layers, num_heads=num_heads, C=C,  model_state_path=BEST_MODEL_STATE_PATH)
+    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=dk, output_dim=dataset.num_classes, num_layers=num_layers, num_heads=num_heads, C=C,  model_state_path=BEST_MODEL_STATE_PATH_ISCX_VPN)
 
     dataiter = iter(test_loader)
     session = next(dataiter)
@@ -71,7 +71,7 @@ def get_id_grams(num_samples, pre_trained_weights):
     test_dataset = dataset[int(len(dataset) * 0.7):]
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=dk, output_dim=dataset.num_classes, num_layers=num_layers, num_heads=num_heads, C=C,  model_state_path=BEST_MODEL_STATE_PATH)
+    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=dk, output_dim=dataset.num_classes, num_layers=num_layers, num_heads=num_heads, C=C,  model_state_path=BEST_MODEL_STATE_PATH_ISCX_VPN)
 
     dataiter = iter(test_loader)
     s = next(dataiter)
@@ -103,7 +103,7 @@ def get_ood_grams(num_samples, masks, ref_gram, pre_trained_weights):
     test_dataset = dataset[int(len(dataset) * 0.7):]
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=dk, output_dim=dataset.num_classes, num_layers=num_layers, num_heads=num_heads, C=C,  model_state_path=BEST_MODEL_STATE_PATH)
+    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=dk, output_dim=dataset.num_classes, num_layers=num_layers, num_heads=num_heads, C=C,  model_state_path=BEST_MODEL_STATE_PATH_ISCX_VPN)
 
     dataiter = iter(test_loader)
 

@@ -4,7 +4,9 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-BEST_MODEL_STATE_PATH = os.path.join(BASE_DIR, 'saved_models\\gformer_model_weights_483.pth')
+BEST_MODEL_STATE_PATH_ISCX_VPN = os.path.join(BASE_DIR, 'saved_models\\gformer_model_weights_483.pth')
+BEST_MODEL_STATE_PATH_VNAT = os.path.join(BASE_DIR, 'saved_models\\gformer_model_weights_vnat_28.pth')
+BEST_MODEL_STATE_PATH_ISCX_TOR = os.path.join(BASE_DIR, 'saved_models\\gformer_model_weights_iscx_tor_490.pth')
 
 # Dataset paths
 ISCX_VPN_DATASET_DIR = os.path.join(BASE_DIR, 'datasets\\ISCX_VPN')
