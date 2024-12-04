@@ -5,15 +5,15 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from config import *
-from utils import vnat_get_short_labels
+from utils import iscx_tor_get_short_labels
 import matplotlib.pyplot as plt
 import csv
-from utils import save_pr_vnat
+from utils import save_pr_iscx_tor
 
 
-pr_csv_file_path = os.path.join(SAVED_EVALS_DIR, 'pr_vnat.csv')
-ap_csv_file_path = os.path.join(SAVED_EVALS_DIR, 'ap_vnat.csv')
-class_labels = vnat_get_short_labels()
+pr_csv_file_path = os.path.join(SAVED_EVALS_DIR, 'pr_iscx_tor.csv')
+ap_csv_file_path = os.path.join(SAVED_EVALS_DIR, 'ap_iscx_tor.csv')
+class_labels = iscx_tor_get_short_labels()
 n_classes = len(class_labels)
 
 
@@ -79,10 +79,10 @@ def plot_pr_curve(plot_title, file_name):
 
 if __name__ == "__main__":
 
-    saved_model = os.path.join(SAVED_MODELS_DIR, 'gformer_model_weights_vnat_5.pth')
-    save_pr_vnat(pr_csv_file_path, ap_csv_file_path, class_labels, n_classes, saved_model=saved_model)
-    plot_pr_curve(plot_title='Precision-Recall Curve (One-vs-Rest) - VNAT (No-Margins)', file_name='fig_pr_curve_vnat_nomargins.png')
+    saved_model = os.path.join(SAVED_MODELS_DIR, 'gformer_model_weights_iscx_tor_10.pth')
+    save_pr_iscx_tor(pr_csv_file_path, ap_csv_file_path, class_labels, n_classes, saved_model=saved_model)
+    plot_pr_curve(plot_title='Precision-Recall Curve (One-vs-Rest) - ISCX-TOR (No-Margins)', file_name='fig_pr_curve_iscx_tor_nomargins.png')
 
-    saved_model = os.path.join(SAVED_MODELS_DIR, 'gformer_model_weights_vnat_28.pth')
-    save_pr_vnat(pr_csv_file_path, ap_csv_file_path, class_labels, n_classes, saved_model=saved_model)
-    plot_pr_curve(plot_title='Precision-Recall Curve (One-vs-Rest) - VNAT (DynAAM)', file_name='fig_pr_curve_vnat_dynaam.png')
+    saved_model = os.path.join(SAVED_MODELS_DIR, 'gformer_model_weights_iscx_tor_490.pth')
+    save_pr_iscx_tor(pr_csv_file_path, ap_csv_file_path, class_labels, n_classes, saved_model=saved_model)
+    plot_pr_curve(plot_title='Precision-Recall Curve (One-vs-Rest) - ISCX-TOR (DynAAM)', file_name='fig_pr_curve_iscx_tor_dynaam.png')

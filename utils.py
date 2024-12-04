@@ -3,6 +3,7 @@ from enum import Enum
 import pickle
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
+from umap.umap_ import UMAP
 import torch
 import numpy as np
 from sklearn.metrics import precision_recall_curve, average_precision_score
@@ -10,7 +11,7 @@ from sklearn.preprocessing import label_binarize
 from torch_geometric.data import DataLoader
 from session_dataset import SessionDataset
 from dynaampg import DynAAMPG
-from config import BEST_MODEL_STATE_PATH_ISCX_TOR, BEST_MODEL_STATE_PATH_ISCX_VPN, ISCX_TOR_DATASET_DIR, ISCX_VPN_DATASET_DIR, VNAT_DATASET_DIR
+from config import BEST_MODEL_STATE_PATH_ISCX_TOR, BEST_MODEL_STATE_PATH_ISCX_VPN, BEST_MODEL_STATE_PATH_VNAT, ISCX_TOR_DATASET_DIR, ISCX_VPN_DATASET_DIR, VNAT_DATASET_DIR
 from sklearn.linear_model import LogisticRegression
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.datasets import make_classification
@@ -280,6 +281,9 @@ def reduce_dimentions(logits, method='PCA', n_components=2):
     elif method == 't-SNE':
         tsne = TSNE(n_components, random_state=42, perplexity=perplexity)
         reduced_features = tsne.fit_transform(logits)
+    elif method == 'UMAP':
+        umap = UMAP(n_components=n_components, random_state=42)
+        reduced_features = umap.fit_transform(logits)
 
     return torch.tensor(reduced_features)
 
@@ -368,7 +372,7 @@ def get_onehot_by_label(label, class_labels):
 
 
 
-def save_pr_auc_iscx_vpn(pr_csv_file_path, ap_csv_file_path, class_labels, n_classes):
+def save_pr_iscx_vpn(pr_csv_file_path, ap_csv_file_path, class_labels, n_classes, saved_model=BEST_MODEL_STATE_PATH_ISCX_VPN):
 
     batch_size = 32
     dk = 512
@@ -386,7 +390,7 @@ def save_pr_auc_iscx_vpn(pr_csv_file_path, ap_csv_file_path, class_labels, n_cla
     test_dataset = dataset[int(len(dataset) * 0.7):]
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=dk, output_dim=dataset.num_classes, num_layers=num_layers, num_heads=num_heads, C=C,  model_state_path=BEST_MODEL_STATE_PATH_ISCX_VPN)
+    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=dk, output_dim=dataset.num_classes, num_layers=num_layers, num_heads=num_heads, C=C,  model_state_path=saved_model)
 
     model.to(device)
     model.eval()
@@ -446,7 +450,90 @@ def save_pr_auc_iscx_vpn(pr_csv_file_path, ap_csv_file_path, class_labels, n_cla
         f.write(str[:-1])
 
 
-def save_pr_auc_vnat(pr_csv_file_path, ap_csv_file_path, class_labels, n_classes):
+
+
+
+def save_pr_vnat(pr_csv_file_path, ap_csv_file_path, class_labels, n_classes, saved_model=BEST_MODEL_STATE_PATH_VNAT):
+
+    batch_size = 32
+    dk = 512
+    C = 3
+    num_layers = 3
+    num_heads = 8
+    dataset = VNAT_DATASET_DIR
+
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+
+    dataset = SessionDataset(root=dataset, class_labels=class_labels)
+    torch.manual_seed(12345)
+    dataset = dataset.shuffle()
+
+    test_dataset = dataset[int(len(dataset) * 0.7):]
+    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+
+    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=dk, output_dim=dataset.num_classes, num_layers=num_layers, num_heads=num_heads, C=C,  model_state_path=saved_model)
+
+    model.to(device)
+    model.eval()
+    y_trues = []
+    y_preds = []
+
+    with torch.no_grad():
+        for session in test_loader:
+            session = session.to(device)
+            output = model(session)
+            y_pred = torch.softmax(output, dim=1).cpu().numpy()
+            y_true = session.y.cpu().numpy()
+            y_preds.append(y_pred)
+            y_trues.append(y_true)
+
+    y_trues = np.concatenate(y_trues, axis=0)
+    y_preds = np.concatenate(y_preds, axis=0)
+
+    y_true_bin = label_binarize(y_trues, classes=np.arange(n_classes))
+ 
+
+    # Initialize dictionaries to store precision, recall, and average precision
+    precision = {}
+    recall = {}
+    average_precision = {}
+
+    # Compute Precision-Recall and Average Precision for each class
+    for i in range(n_classes):
+        precision[i], recall[i], _ = precision_recall_curve(y_true_bin[:, i], y_preds[:, i])
+        average_precision[i] = average_precision_score(y_true_bin[:, i], y_preds[:, i])
+
+    # Save precision and recall of all classes in one CSV file
+    with open(pr_csv_file_path, 'w') as f:
+        # Write header
+        header = []
+        for i in range(n_classes):
+            header.append(f'precision_class_{i+1}')
+            header.append(f'recall_class_{i+1}')
+        f.write(','.join(header) + '\n')
+        
+        # Write precision and recall values
+        for i in range(len(precision[0])):
+            row = []
+            for j in range(n_classes):
+                if i < len(precision[j]):
+                    row.append(f'{precision[j][i]:.4f}')
+                    row.append(f'{recall[j][i]:.4f}')
+                else:
+                    row.append('')
+                    row.append('')
+            f.write(','.join(row) + '\n')
+
+    with open(ap_csv_file_path, 'w') as f:
+        str = ''      
+        for ap in average_precision.items():
+            str += f'{ap[1]}' + '\n'
+        f.write(str[:-1])
+
+
+
+
+def save_pr_vnat2(pr_csv_file_path, ap_csv_file_path, class_labels, n_classes):
     def average_precision(precision, recall):
         # Calculate the area under the precision-recall curve using the trapezoidal rule
         return -np.sum(np.diff(recall) * np.array(precision)[:-1])
@@ -517,6 +604,86 @@ def save_pr_auc_vnat(pr_csv_file_path, ap_csv_file_path, class_labels, n_classes
         str = ''      
         for ap in aps:
             str += f'{ap}' + '\n'
+        f.write(str[:-1])
+
+
+
+
+def save_pr_iscx_tor(pr_csv_file_path, ap_csv_file_path, class_labels, n_classes, saved_model=BEST_MODEL_STATE_PATH_ISCX_TOR):
+
+    batch_size = 32
+    dk = 512
+    C = 3
+    num_layers = 3
+    num_heads = 8
+    dataset = ISCX_TOR_DATASET_DIR
+
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+
+    dataset = SessionDataset(root=dataset, class_labels=class_labels)
+    torch.manual_seed(12345)
+    dataset = dataset.shuffle()
+
+    test_dataset = dataset[int(len(dataset) * 0.7):]
+    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+
+    model = DynAAMPG(input_dim=dataset.num_node_features, hidden_dim=dk, output_dim=dataset.num_classes, num_layers=num_layers, num_heads=num_heads, C=C,  model_state_path=saved_model)
+
+    model.to(device)
+    model.eval()
+    y_trues = []
+    y_preds = []
+
+    with torch.no_grad():
+        for session in test_loader:
+            session = session.to(device)
+            output = model(session)
+            y_pred = torch.softmax(output, dim=1).cpu().numpy()
+            y_true = session.y.cpu().numpy()
+            y_preds.append(y_pred)
+            y_trues.append(y_true)
+
+    y_trues = np.concatenate(y_trues, axis=0)
+    y_preds = np.concatenate(y_preds, axis=0)
+
+    y_true_bin = label_binarize(y_trues, classes=np.arange(n_classes))
+ 
+
+    # Initialize dictionaries to store precision, recall, and average precision
+    precision = {}
+    recall = {}
+    average_precision = {}
+
+    # Compute Precision-Recall and Average Precision for each class
+    for i in range(n_classes):
+        precision[i], recall[i], _ = precision_recall_curve(y_true_bin[:, i], y_preds[:, i])
+        average_precision[i] = average_precision_score(y_true_bin[:, i], y_preds[:, i])
+
+    # Save precision and recall of all classes in one CSV file
+    with open(pr_csv_file_path, 'w') as f:
+        # Write header
+        header = []
+        for i in range(n_classes):
+            header.append(f'precision_class_{i+1}')
+            header.append(f'recall_class_{i+1}')
+        f.write(','.join(header) + '\n')
+        
+        # Write precision and recall values
+        for i in range(len(precision[0])):
+            row = []
+            for j in range(n_classes):
+                if i < len(precision[j]):
+                    row.append(f'{precision[j][i]:.4f}')
+                    row.append(f'{recall[j][i]:.4f}')
+                else:
+                    row.append('')
+                    row.append('')
+            f.write(','.join(row) + '\n')
+
+    with open(ap_csv_file_path, 'w') as f:
+        str = ''      
+        for ap in average_precision.items():
+            str += f'{ap[1]}' + '\n'
         f.write(str[:-1])
 
 

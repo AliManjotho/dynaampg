@@ -2,7 +2,6 @@ import torch
 import torch.nn.functional as F
 from torch_geometric.loader import DataLoader
 from dynaampg import DynAAMPG
-from session_dataset import SessionDataset
 from torch.utils.tensorboard import SummaryWriter
 import shutil
 import os
