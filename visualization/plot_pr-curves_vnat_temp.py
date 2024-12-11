@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -13,27 +17,31 @@ colors = [
         '#D2691E', '#FF7F50', '#6495ED', '#DC143C'
     ]
 
+	
+
 
 classes = [
-    "email", "chat", "streaming", "file_transfer", "voip",
-    "p2p", "vpn_email", "vpn_chat", "vpn_streaming",
-    "vpn_file_transfer", "vpn_voip", "vpn_p2p"
+    "streaming", "voip", "file_transfer", "p2p", "vpn_streaming",
+    "vpn_voip", "vpn_file_transfer", "vpn_p2p"
 ]
 
 instances = [
-    14621, 21610, 3752, 138549, 399893,
-    4996, 596, 8058, 1318,
-    2040, 7730, 954
+    3518,
+	3052,
+ 	32826,
+    27182,
+	10,
+	712,
+	18,
+	16
 ]
 
 avg_precision_nomargins = [
-    0.71,     0.784,    0.571,    0.925,    0.987,
-    0.597,    0.52,     0.651,    0.538,    0.553,
-    0.538,    0.553,    0.604,    0.529
-]
+    0.857,     0.837,    0.975,    0.935,    0.689,
+    0.754,    0.718,     0.753]
 
 
-avg_precision_dynaam = [0.988, 0.991, 0.982, 0.993, 0.995, 0.984, 0.952, 0.986, 0.972, 0.976, 0.971, 0.975, 0.986, 0.964]
+avg_precision_dynaam = [0.938,     0.929,    0.984,    0.981,    0.901, 0.916,    0.904,     0.911]
 
 
 clip = np.array(instances)/max(instances)
@@ -65,7 +73,7 @@ for i in range(n_classes):
 
 axes[0].set_xlabel("Recall")
 axes[0].set_ylabel("Precision")
-axes[0].set_title('Precision-Recall Curve (No-Margins)')
+axes[0].set_title('Precision-Recall Curve (No-Margins) - VNAT')
 axes[0].legend(loc="best")
 axes[0].grid(True, alpha=0.3)
 axes[0].set_xlim(0, 1.0)
@@ -85,12 +93,12 @@ for i in range(n_classes):
 
 axes[1].set_xlabel("Recall")
 axes[1].set_ylabel("Precision")
-axes[1].set_title('Precision-Recall Curve (DynAAM)')
+axes[1].set_title('Precision-Recall Curve (DynAAM) - VNAT')
 axes[1].legend(loc="best")
 axes[1].grid(True, alpha=0.3)
 axes[1].set_xlim(0, 1.0)
 axes[1].set_ylim(0, 1.1)
 
 plt.tight_layout()
-plt.savefig(f'visualization/fig_pr_curve_iscx_vpn.png')
+plt.savefig(f'visualization/fig_pr_curve_vnat.png')
 plt.show()

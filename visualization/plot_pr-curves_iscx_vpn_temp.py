@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -65,7 +69,7 @@ for i in range(n_classes):
 
 axes[0].set_xlabel("Recall")
 axes[0].set_ylabel("Precision")
-axes[0].set_title('Precision-Recall Curve (No-Margins)')
+axes[0].set_title('Precision-Recall Curve (No-Margins) - ISCX-VPN')
 axes[0].legend(loc="best")
 axes[0].grid(True, alpha=0.3)
 axes[0].set_xlim(0, 1.0)
@@ -85,7 +89,7 @@ for i in range(n_classes):
 
 axes[1].set_xlabel("Recall")
 axes[1].set_ylabel("Precision")
-axes[1].set_title('Precision-Recall Curve (DynAAM)')
+axes[1].set_title('Precision-Recall Curve (DynAAM) - ISCX-VPN')
 axes[1].legend(loc="best")
 axes[1].grid(True, alpha=0.3)
 axes[1].set_xlim(0, 1.0)
