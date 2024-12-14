@@ -120,13 +120,13 @@ def preprocess(dataset_path, packets_per_session, dataset):
 
 
 if __name__=='__main__':
-    packets_per_session = 10
+    packets_per_session = 5
 
-    # Process ISCX dataset
-    # preprocess(ISCX_VPN_DATASET_DIR, packets_per_session, DATASET.ISCX_VPN)
+    # Process ISCX-VPN dataset
+    preprocess(ISCX_VPN_DATASET_DIR, packets_per_session, DATASET.ISCX_VPN)
 
-    # Process VNAT-VPN dataset
-    # preprocess(VNAT_DATASET_DIR, packets_per_session, DATASET.VNAT)
+    # Process VNAT dataset
+    preprocess(VNAT_DATASET_DIR, packets_per_session, DATASET.VNAT)
 
     # Process ISCX-Tor dataset
     # preprocess(ISCX_TOR_DATASET_DIR, packets_per_session, DATASET.ISCX_TOR)
@@ -137,7 +137,7 @@ if __name__=='__main__':
     # Process Realtime dataset
     # preprocess(REALTIME_DATASET_DIR, packets_per_session, DATASET.REALTIME)
     
-    preprocess(r'C:\Datasets\ytube', packets_per_session, DATASET.REALTIME)
+
 
 
 

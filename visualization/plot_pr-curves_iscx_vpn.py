@@ -79,10 +79,10 @@ def plot_pr_curve(plot_title, file_name):
 
 if __name__ == "__main__":
 
-    saved_model = os.path.join(SAVED_MODELS_DIR, 'gformer_model_weights_iscx_vpn_10.pth')
+    saved_model = BEST_MODEL_STATE_PATH_ISCX_VPN
     save_pr_iscx_vpn(pr_csv_file_path, ap_csv_file_path, class_labels, n_classes, saved_model=saved_model)
     plot_pr_curve(plot_title='Precision-Recall Curve (One-vs-Rest) - ISCX-VPN (No-Margins)', file_name='fig_pr_curve_iscx_vpn_nomargins.png')
 
-    saved_model = os.path.join(SAVED_MODELS_DIR, 'gformer_model_weights_iscx_vpn_483.pth')
-    save_pr_iscx_vpn(pr_csv_file_path, ap_csv_file_path, class_labels, n_classes, saved_model=saved_model)
-    plot_pr_curve(plot_title='Precision-Recall Curve (One-vs-Rest) - ISCX-VPN (DynAAM)', file_name='fig_pr_curve_iscx_vpn_dynaam.png')
+    # saved_model = os.path.join(SAVED_MODELS_DIR, 'gformer_model_weights_iscx_vpn_483.pth')
+    # save_pr_iscx_vpn(pr_csv_file_path, ap_csv_file_path, class_labels, n_classes, saved_model=saved_model)
+    # plot_pr_curve(plot_title='Precision-Recall Curve (One-vs-Rest) - ISCX-VPN (DynAAM)', file_name='fig_pr_curve_iscx_vpn_dynaam.png')

@@ -10,6 +10,8 @@ from utils import *
 import os
 from config import *
 from utils import *
+from torch_geometric.loader import DataLoader
+from torch.utils.data import SubsetRandomSampler
 
 
 class SessionDataset(InMemoryDataset):
@@ -18,7 +20,7 @@ class SessionDataset(InMemoryDataset):
         self.class_labels = class_labels
         super(SessionDataset, self).__init__(root, transform, pre_transform, pre_filter)
         self.data, self.slices = torch.load(self.processed_paths[0])
-        self.root = root
+        self.root = root        
                 
         self.new_class_labels = []
 
@@ -64,6 +66,8 @@ class SessionDataset(InMemoryDataset):
                 y = torch.tensor(np.array([class_vector], dtype=np.float32), dtype=torch.float)
                 graph = Data(x=x, edge_index=edge_index, y=y)
 
+                self.class_counts[class_label] += 1
+
                 data_list.append(graph)
 
             pbar.update(1)
@@ -82,11 +86,91 @@ class SessionDataset(InMemoryDataset):
     def get_random_session(cls, num_sessions=1):
         sessions = {}
         
-        x = torch.rand((10,1500))
-        edge_indices = [[0,1,2,3,4,5,6,7,8],[1,2,3,4,5,6,7,8,9]]
+        x = torch.rand((5,1500))
+        edge_indices = [[0,1,2,3],[1,2,3,4]]
         y = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         data = Data(x=x, edge_indices=edge_indices, y=y)
 
         print(x)
 
         return sessions
+    
+
+    
+    def get_class_distribution(self):
+        class_counts = {label: 0 for label in self.class_labels}
+        instances = self.len()
+
+        for i in range(instances):
+            instance = self.get(i)
+            y = instance.y
+            index = torch.argmax(y).item()
+            
+            class_counts[self.class_labels[index]] += 1
+
+        return class_counts
+    
+
+    def get_train_test_loaders(self, batch_size=32, split=0.7):
+        # Get indices for each class
+        class_indices = {label: [] for label in self.class_labels}
+        for i in range(self.len()):
+            instance = self.get(i)
+            y = instance.y
+            index = torch.argmax(y).item()
+            class_indices[self.class_labels[index]].append(i)
+        
+        # Split indices for each class according to ratio
+        train_indices = []
+        test_indices = []
+        for label in self.class_labels:
+            indices = class_indices[label]
+            n_train = int(len(indices) * split)
+            
+            # Shuffle indices
+            indices = np.random.permutation(indices)
+            
+            train_indices.extend(indices[:n_train])
+            test_indices.extend(indices[n_train:])
+        
+        # Create samplers for train and test
+        train_sampler = SubsetRandomSampler(train_indices)
+        test_sampler = SubsetRandomSampler(test_indices)
+        
+        # Create data loaders
+        train_loader = DataLoader(self, batch_size=batch_size, sampler=train_sampler)
+        test_loader = DataLoader(self, batch_size=batch_size, sampler=test_sampler)
+        
+        return train_loader, test_loader
+    
+
+    @classmethod
+    def get_class_count(cls, loader, class_labels):
+        class_counts = {label: 0 for label in class_labels}
+        for batch in loader:
+            indices = torch.argmax(batch.y, dim=1)
+            for idx in indices:
+                class_counts[class_labels[idx.item()]] += 1
+
+        return class_counts
+
+
+if __name__ == '__main__':
+
+    dataset = SessionDataset(root=ISCX_VPN_DATASET_DIR, class_labels=iscx_vpn_get_unique_labels())
+
+    class_counts = dataset.get_class_distribution()
+    for key, value in class_counts.items():
+        print(value)
+
+    train_loader, test_loader = dataset.get_train_test_loaders(batch_size=32, split=0.7)
+
+    train_class_counts = dataset.get_class_count(train_loader, dataset.class_labels)
+    print('Train Distribution:')
+    for key, value in train_class_counts.items():
+        print(value)
+
+    test_class_counts = dataset.get_class_count(test_loader, dataset.class_labels)
+    print('Test Distribution:')
+    for key, value in test_class_counts.items():
+        print(value)
